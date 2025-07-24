@@ -6,6 +6,12 @@
     <title>SuiLearn & Earn | Your Gateway to the Decentralized Future</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Sui.js SDK -->
+    <script src="https://unpkg.com/@mysten/sui.js@latest/dist/index.js"></script>
+    <!-- WalletConnect SDK -->
+    <script src="https://unpkg.com/@walletconnect/web3-provider@1.8.0/dist/umd/index.min.js"></script>
+    <!-- Axios for potential course fetching -->
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         
@@ -46,13 +52,6 @@
             animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
     </style>
-    <!-- Sui.js SDK -->
-<script src="https://unpkg.com/@mysten/sui.js@latest/dist/index.js"></script>
-<!-- Sui Wallet Standard Adapter -->
-<script src="https://unpkg.com/@mysten/wallet-standard@latest/dist/index.js"></script>
-<script src="https://unpkg.com/@mysten/sui.js@latest/dist/index.js"></script>
-<script src="https://unpkg.com/@mysten/wallet-standard@latest/dist/index.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <body class="min-h-screen">
     <!-- Header/Navbar -->
@@ -61,7 +60,7 @@
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
                     <div class="flex-shrink-0 flex items-center">
-                        <img class="h-8 w-auto" src="https://placeholder.com/wp-content/uploads/2018/10/placeholder.com-logo1.png" alt="SuiLearn & Earn">
+                        <img class="h-8 w-auto" src="/assets/images/sui-logo.png" alt="SuiLearn & Earn">
                         <span class="ml-2 text-xl font-bold text-gray-900">SuiLearn & Earn</span>
                     </div>
                     <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
@@ -83,6 +82,7 @@
                             Connected
                         </span>
                         <span id="walletAddress" class="ml-2 text-sm font-medium text-gray-700 truncate max-w-xs"></span>
+                        <span id="walletBalance" class="ml-2 text-sm font-medium text-gray-700"></span>
                     </div>
                 </div>
                 <div class="-mr-2 flex items-center sm:hidden">
@@ -107,16 +107,17 @@
                     <button id="mobileConnectWalletBtn" class="gradient-bg text-white w-full px-4 py-2 rounded-md text-sm font-medium hover:opacity-90 transition duration-150 ease-in-out">
                         Connect Wallet
                     </button>
-                </div>
-                <div id="mobileWalletConnected" class="hidden px-4 py-3">
-                    <div class="flex items-center">
-                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
-                            <svg class="-ml-0.5 mr-1.5 h-2 w-2 text-purple-400" fill="currentColor" viewBox="0 0 8 8">
-                                <circle cx="4" cy="4" r="3" />
-                            </svg>
-                            Connected
-                        </span>
-                        <span id="mobileWalletAddress" class="ml-2 text-sm font-medium text-gray-700 truncate max-w-xs"></span>
+                    <div id="mobileWalletConnected" class="hidden px-4 py-3">
+                        <div class="flex items-center">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
+                                <svg class="-ml-0.5 mr-1.5 h-2 w-2 text-purple-400" fill="currentColor" viewBox="0 0 8 8">
+                                    <circle cx="4" cy="4" r="3" />
+                                </svg>
+                                Connected
+                            </span>
+                            <span id="mobileWalletAddress" class="ml-2 text-sm font-medium text-gray-700 truncate max-w-xs"></span>
+                            <span id="mobileWalletBalance" class="ml-2 text-sm font-medium text-gray-700"></span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -141,7 +142,7 @@
                         <div class="absolute -top-8 -left-8 w-64 h-64 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
                         <div class="absolute -bottom-8 -right-8 w-64 h-64 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
                         <div class="relative">
-                            <img src="https://placeholder.com/wp-content/uploads/2018/10/placeholder.com-logo1.png" alt="Learn and Earn" class="w-full h-auto rounded-lg shadow-2xl">
+                            <img src="/assets/images/hero-image.jpg" alt="Learn and Earn" class="w-full h-auto rounded-lg shadow-2xl">
                         </div>
                     </div>
                 </div>
@@ -208,7 +209,7 @@
                 <!-- Course Card 1 -->
                 <div class="course-card bg-white rounded-xl shadow-md overflow-hidden transition duration-300 ease-in-out">
                     <div class="relative">
-                        <img class="w-full h-48 object-cover" src="https://placeholder.com/wp-content/uploads/2018/10/placeholder.com-logo1.png" alt="Sui Move Fundamentals">
+                        <img class="w-full h-48 object-cover" src="/assets/images/sui-move-course.jpg" alt="Sui Move Fundamentals">
                         <div class="absolute top-2 right-2 bg-purple-600 text-white text-xs font-bold px-2 py-1 rounded-full">Earn: 50 SUI</div>
                     </div>
                     <div class="p-6">
@@ -235,7 +236,7 @@
                 <!-- Course Card 2 -->
                 <div class="course-card bg-white rounded-xl shadow-md overflow-hidden transition duration-300 ease-in-out">
                     <div class="relative">
-                        <img class="w-full h-48 object-cover" src="https://placeholder.com/wp-content/uploads/2018/10/placeholder.com-logo1.png" alt="DeFi Masterclass">
+                        <img class="w-full h-48 object-cover" src="/assets/images/defi-course.jpg" alt="DeFi Masterclass">
                         <div class="absolute top-2 right-2 bg-purple-600 text-white text-xs font-bold px-2 py-1 rounded-full">Earn: 100 SUI</div>
                     </div>
                     <div class="p-6">
@@ -261,7 +262,7 @@
                 <!-- Course Card 3 -->
                 <div class="course-card bg-white rounded-xl shadow-md overflow-hidden transition duration-300 ease-in-out">
                     <div class="relative">
-                        <img class="w-full h-48 object-cover" src="https://placeholder.com/wp-content/uploads/2018/10/placeholder.com-logo1.png" alt="NFT Development">
+                        <img class="w-full h-48 object-cover" src="/assets/images/nft-course.jpg" alt="NFT Development">
                         <div class="absolute top-2 right-2 bg-purple-600 text-white text-xs font-bold px-2 py-1 rounded-full">Earn: 75 SUI</div>
                     </div>
                     <div class="p-6">
@@ -286,7 +287,7 @@
             </div>
             
             <div class="mt-12 text-center">
-                <a href="#" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white gradient-bg hover:opacity-90 transition duration-150 ease-in-out">
+                <a href="courses.html" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white gradient-bg hover:opacity-90 transition duration-150 ease-in-out">
                     View All Courses
                     <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 -mr-1 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                         <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -451,7 +452,7 @@
                                         <span class="text-sm font-medium text-gray-500">Available to Claim</span>
                                         <span class="text-lg font-bold text-purple-600">0 SUI</span>
                                     </div>
-                                    <button class="mt-4 gradient-bg text-white w-full px-4 py-2 rounded-md text-sm font-medium hover:opacity-90 transition duration-150 ease-in-out">
+                                    <button id="claimRewardsBtn" class="mt-4 gradient-bg text-white w-full px-4 py-2 rounded-md text-sm font-medium hover:opacity-90 transition duration-150 ease-in-out">
                                         Claim Rewards
                                     </button>
                                 </div>
@@ -476,7 +477,7 @@
                     <div class="flex items-center">
                         <div class="flex-shrink-0 bg-purple-100 p-3 rounded-lg text-purple-600">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                             </svg>
                         </div>
                         <div class="ml-4">
@@ -613,7 +614,7 @@
                 <div>
                     <h3 class="text-sm font-semibold text-gray-400 tracking-wider uppercase">Learn</h3>
                     <ul class="mt-4 space-y-4">
-                        <li><a href="#" class="text-base text-gray-300 hover:text-white">All Courses</a></li>
+                        <li><a href="courses.html" class="text-base text-gray-300 hover:text-white">All Courses</a></li>
                         <li><a href="#" class="text-base text-gray-300 hover:text-white">Web3 Fundamentals</a></li>
                         <li><a href="#" class="text-base text-gray-300 hover:text-white">Sui Move</a></li>
                         <li><a href="#" class="text-base text-gray-300 hover:text-white">DeFi</a></li>
@@ -669,7 +670,7 @@
                         </svg>
                     </a>
                 </div>
-                <p class="mt-8 md:mt-0 text-base text-gray-400">&copy; 2023 SuiLearn & Earn. All rights reserved.</p>
+                <p class="mt-8 md:mt-0 text-base text-gray-400">© 2023 SuiLearn & Earn. All rights reserved.</p>
             </div>
         </div>
     </footer>
@@ -680,7 +681,7 @@
             <div class="fixed inset-0 transition-opacity" aria-hidden="true">
                 <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
             </div>
-            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
+            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true"></span>
             <div class="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-sm sm:w-full sm:p-6">
                 <div>
                     <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-purple-100">
@@ -691,22 +692,15 @@
                     <div class="mt-3 text-center sm:mt-5">
                         <h3 class="text-lg leading-6 font-medium text-gray-900">Connect Your Wallet</h3>
                         <div class="mt-2">
-                            <p class="text-sm text-gray-500">Choose a wallet to connect and start learning & earning on Sui.</p>
+                            <p class="text-sm text-gray-500">Scan the QR code with a WalletConnect-compatible wallet to connect and start learning & earning on Sui.</p>
                         </div>
                     </div>
                 </div>
                 <div class="mt-5 sm:mt-6 space-y-4">
-                    <button id="suiWalletBtn" class="w-full flex items-center justify-center px-4 py-3 border border-gray-300 shadow-sm text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
-                        <img src="https://placeholder.com/wp-content/uploads/2018/10/placeholder.com-logo1.png" class="h-6 w-6 mr-2" alt="Sui Wallet">
-                        Sui Wallet
-                    </button>
-                    <button id="martianWalletBtn" class="w-full flex items-center justify-center px-4 py-3 border border-gray-300 shadow-sm text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
-                        <img src="https://placeholder.com/wp-content/uploads/2018/10/placeholder.com-logo1.png" class="h-6 w-6 mr-2" alt="Martian Wallet">
-                        Martian Wallet
-                    </button>
-                    <button id="ethosWalletBtn" class="w-full flex items-center justify-center px-4 py-3 border border-gray-300 shadow-sm text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
-                        <img src="https://placeholder.com/wp-content/uploads/2018/10/placeholder.com-logo1.png" class="h-6 w-6 mr-2" alt="Ethos Wallet">
-                        Ethos Wallet
+                    <div id="walletConnectQR" class="flex justify-center"></div>
+                    <button id="walletConnectBtn" class="w-full flex items-center justify-center px-4 py-3 border border-gray-300 shadow-sm text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+                        <img src="/assets/images/walletconnect-logo.png" class="h-6 w-6 mr-2" alt="WalletConnect">
+                        Connect via WalletConnect
                     </button>
                 </div>
                 <div class="mt-5 sm:mt-6">
@@ -717,148 +711,221 @@
             </div>
         </div>
     </div>
-<script>
-    // Initialize Sui Wallet Standard
-    async function initializeWalletAdapter() {
-        const { getWallets, WalletStandardAdapter } = window.Mysten.WalletStandard;
-        const wallets = getWallets();
+
+    <script>
+        // Initialize WalletConnect
+        async function initializeWalletConnect() {
+            const provider = new WalletConnectWeb3Provider({
+                chainId: 1, // Sui testnet chain ID (adjust for mainnet if needed)
+                rpc: {
+                    1: 'https://fullnode.testnet.sui.io'
+                },
+                qrcode: true,
+                qrcodeModalOptions: {
+                    mobileLinks: ['sui_wallet', 'martian_wallet', 'ethos_wallet']
+                }
+            });
+            return provider;
+        }
+
+        // Fetch user balance
+        async function fetchUserBalance(address) {
+            const provider = new window.SuiClient({ url: 'https://fullnode.testnet.sui.io' });
+            try {
+                const balanceResponse = await provider.getBalance({ owner: address });
+                const suiBalance = Number.parseInt(balanceResponse.totalBalance) / 1_000_000_000; // Convert MIST to SUI
+                return suiBalance.toFixed(2);
+            } catch (error) {
+                console.error('Error fetching balance:', error);
+                showNotification('Failed to fetch balance.', 'error');
+                return '0.00';
+            }
+        }
+
+        // Fetch user rewards (optional, requires deployed smart contract)
+        async function fetchUserRewards(address) {
+            const provider = new window.SuiClient({ url: 'https://fullnode.testnet.sui.io' });
+            try {
+                const rewardsObject = await provider.getObject({
+                    id: 'YOUR_REWARDS_OBJECT_ID', // Replace with actual object ID
+                    options: { showContent: true },
+                });
+                const totalEarned = rewardsObject.data?.content?.fields?.total_earned || 0;
+                const availableToClaim = rewardsObject.data?.content?.fields?.available_to_claim || 0;
+                return { totalEarned, availableToClaim };
+            } catch (error) {
+                console.error('Error fetching rewards:', error);
+                showNotification('Failed to fetch rewards.', 'error');
+                return { totalEarned: 0, availableToClaim: 0 };
+            }
+        }
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
         
-        return wallets;
-    }
-
-    // Mobile menu toggle
-    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-    const mobileMenu = document.getElementById('mobileMenu');
-    
-    mobileMenuBtn.addEventListener('click', () => {
-        mobileMenu.classList.toggle('hidden');
-    });
-
-    // Wallet connection
-    const connectWalletBtns = [
-        document.getElementById('connectWalletBtn'),
-        document.getElementById('heroConnectWalletBtn'),
-        document.getElementById('earningsConnectWalletBtn'),
-        document.getElementById('finalConnectWalletBtn'),
-        document.getElementById('mobileConnectWalletBtn')
-    ];
-
-    const walletModal = document.getElementById('walletModal');
-    const closeWalletModalBtn = document.getElementById('closeWalletModalBtn');
-    const walletConnectBtns = [
-        document.getElementById('suiWalletBtn'),
-        document.getElementById('martianWalletBtn'),
-        document.getElementById('ethosWalletBtn')
-    ];
-
-    // Show wallet modal
-    connectWalletBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            walletModal.classList.remove('hidden');
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
         });
-    });
 
-    // Close wallet modal
-    closeWalletModalBtn.addEventListener('click', () => {
-        walletModal.classList.add('hidden');
-    });
+        // Wallet connection
+        const connectWalletBtns = [
+            document.getElementById('connectWalletBtn'),
+            document.getElementById('heroConnectWalletBtn'),
+            document.getElementById('earningsConnectWalletBtn'),
+            document.getElementById('finalConnectWalletBtn'),
+            document.getElementById('mobileConnectWalletBtn')
+        ];
 
-    // Connect to wallet
-    async function connectWallet(walletName) {
-        try {
-            const wallets = await initializeWalletAdapter();
-            const wallet = wallets.find(w => w.name.toLowerCase().includes(walletName.toLowerCase()));
-            
-            if (!wallet) {
-                showNotification(`Wallet ${walletName} not found!`, 'error');
+        const walletModal = document.getElementById('walletModal');
+        const closeWalletModalBtn = document.getElementById('closeWalletModalBtn');
+        const walletConnectBtn = document.getElementById('walletConnectBtn');
+
+        // Show wallet modal
+        connectWalletBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                walletModal.classList.remove('hidden');
+            });
+        });
+
+        // Close wallet modal
+        closeWalletModalBtn.addEventListener('click', () => {
+            walletModal.classList.add('hidden');
+        });
+
+        // Connect to wallet via WalletConnect
+        async function connectWallet() {
+            try {
+                const provider = await initializeWalletConnect();
+                await provider.enable(); // Initiates WalletConnect session (shows QR code)
+                const accounts = await provider.request({ method: 'eth_accounts' });
+                const walletAddress = accounts[0];
+                const balance = await fetchUserBalance(walletAddress);
+                const rewards = await fetchUserRewards(walletAddress);
+
+                // Update UI
+                document.getElementById('walletConnected').classList.remove('hidden');
+                document.getElementById('walletAddress').textContent = walletAddress.slice(0, 6) + '...' + walletAddress.slice(-4);
+                document.getElementById('walletBalance').textContent = `Balance: ${balance} SUI`;
+                
+                document.getElementById('mobileWalletConnected').classList.remove('hidden');
+                document.getElementById('mobileWalletAddress').textContent = walletAddress.slice(0, 6) + '...' + walletAddress.slice(-4);
+                document.getElementById('mobileWalletBalance').textContent = `Balance: ${balance} SUI`;
+                
+                document.getElementById('walletNotConnectedEarnings').classList.add('hidden');
+                document.getElementById('walletConnectedEarnings').classList.remove('hidden');
+                document.querySelector('#walletConnectedEarnings .text-lg.font-bold.text-gray-900').textContent = `${rewards.totalEarned} SUI`;
+                document.querySelector('#walletConnectedEarnings .text-lg.font-bold.text-purple-600').textContent = `${rewards.availableToClaim} SUI`;
+
+                // Store wallet address for courses.html
+                sessionStorage.setItem('walletAddress', walletAddress);
+
+                walletModal.classList.add('hidden');
+                showNotification('Wallet connected successfully! Redirecting to courses...');
+
+                // Redirect to courses.html
+                setTimeout(() => {
+                    window.location.href = 'courses.html';
+                }, 2000);
+            } catch (error) {
+                console.error('Wallet connection error:', error);
+                showNotification('Failed to connect wallet. Please try again.', 'error');
+            }
+        }
+
+        // WalletConnect button listener
+        walletConnectBtn.addEventListener('click', connectWallet);
+
+        // Claim rewards (requires deployed smart contract)
+        document.getElementById('claimRewardsBtn').addEventListener('click', async () => {
+            const walletAddress = sessionStorage.getItem('walletAddress');
+            if (!walletAddress) {
+                showNotification('No wallet connected!', 'error');
                 return;
             }
 
-            // Connect to the wallet
-            await wallet.connect();
-            const account = wallet.accounts[0];
-            const walletAddress = account.address;
+            const provider = await initializeWalletConnect();
+            try {
+                const tx = {
+                    kind: 'moveCall',
+                    data: {
+                        packageObjectId: 'YOUR_PACKAGE_ID', // Replace with actual package ID
+                        module: 'rewards',
+                        function: 'claim_rewards',
+                        typeArguments: [],
+                        arguments: [walletAddress],
+                    },
+                };
 
-            // Update UI
-            document.getElementById('walletConnected').classList.remove('hidden');
-            document.getElementById('walletAddress').textContent = walletAddress.slice(0, 6) + '...' + walletAddress.slice(-4);
-            
-            document.getElementById('mobileWalletConnected').classList.remove('hidden');
-            document.getElementById('mobileWalletAddress').textContent = walletAddress.slice(0, 6) + '...' + walletAddress.slice(-4);
-            
-            document.getElementById('walletNotConnectedEarnings').classList.add('hidden');
-            document.getElementById('walletConnectedEarnings').classList.remove('hidden');
-
-            walletModal.classList.add('hidden');
-            showNotification('Wallet connected successfully!');
-        } catch (error) {
-            console.error('Wallet connection error:', error);
-            showNotification('Failed to connect wallet. Please try again.', 'error');
-        }
-    }
-
-    // Wallet button listeners
-    walletConnectBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            const walletName = btn.textContent.trim().split(' ')[0]; // e.g., "Sui" from "Sui Wallet"
-            connectWallet(walletName);
-        });
-    });
-
-    // Enhanced notification function
-    function showNotification(message, type = 'success') {
-        const notification = document.createElement('div');
-        notification.className = `fixed bottom-4 right-4 px-4 py-2 rounded-md shadow-lg flex items-center ${
-            type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
-        }`;
-        notification.innerHTML = `
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
-                ${
-                    type === 'success'
-                        ? '<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />'
-                        : '<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />'
-                }
-            </svg>
-            ${message}
-        `;
-        document.body.appendChild(notification);
-
-        setTimeout(() => {
-            notification.classList.add('opacity-0', 'transition-opacity', 'duration-300');
-            setTimeout(() => {
-                notification.remove();
-            }, 300);
-        }, 3000);
-    }
-
-    // Course card hover effect
-    const courseCards = document.querySelectorAll('.course-card');
-    courseCards.forEach(card => {
-        card.addEventListener('mouseenter', () => {
-            card.style.transition = 'transform 0.3s ease, box-shadow 0.3s ease';
-        });
-    });
-
-    // Smooth scrolling for anchor links
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            
-            const targetId = this.getAttribute('href');
-            if (targetId === '#') return;
-            
-            const targetElement = document.querySelector(targetId);
-            if (targetElement) {
-                targetElement.scrollIntoView({
-                    behavior: 'smooth'
+                const result = await provider.request({
+                    method: 'eth_sendTransaction',
+                    params: [tx],
                 });
-                
-                if (!mobileMenu.classList.contains('hidden')) {
-                    mobileMenu.classList.add('hidden');
-                }
+                showNotification('Rewards claimed successfully!');
+                const rewards = await fetchUserRewards(walletAddress);
+                document.querySelector('#walletConnectedEarnings .text-lg.font-bold.text-gray-900').textContent = `${rewards.totalEarned} SUI`;
+                document.querySelector('#walletConnectedEarnings .text-lg.font-bold.text-purple-600').textContent = `${rewards.availableToClaim} SUI`;
+            } catch (error) {
+                console.error('Error claiming rewards:', error);
+                showNotification('Failed to claim rewards.', 'error');
             }
         });
-    });
-</script>
+
+        // Notification function
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `fixed bottom-4 right-4 px-4 py-2 rounded-md shadow-lg flex items-center ${
+                type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+            }`;
+            notification.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                    ${
+                        type === 'success'
+                            ? '<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />'
+                            : '<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414████████
+
+System: .414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                                    </svg>
+                                    ${message}
+                                `;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.classList.add('opacity-0', 'transition-opacity', 'duration-300');
+                setTimeout(() => {
+                    notification.remove();
+                }, 300);
+            }, 3000);
+        }
+
+        // Course card hover effect
+        const courseCards = document.querySelectorAll('.course-card');
+        courseCards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transition = 'transform 0.3s ease, box-shadow 0.3s ease';
+            });
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                    
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 </html>
