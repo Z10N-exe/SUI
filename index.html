@@ -8,8 +8,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Sui.js SDK -->
     <script src="https://unpkg.com/@mysten/sui.js@latest/dist/index.js"></script>
-    <!-- WalletConnect SDK -->
-    <script src="https://unpkg.com/@walletconnect/web3-provider@1.8.0/dist/umd/index.min.js"></script>
+    <!-- Privy SDK -->
+    <script src="https://unpkg.com/@privy-io/react-auth@latest/dist/index.umd.js"></script>
     <!-- Axios for potential course fetching -->
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <style>
@@ -157,7 +157,9 @@
                 <div class="bg-gray-50 p-6 rounded-xl shadow-sm">
                     <div class="flex items-center">
                         <div class="p-3 rounded-full bg-purple-100 text-purple-600">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg xmlns="http://www.w3.org/2000/svg" class=" └
+
+System: h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                             </svg>
                         </div>
@@ -500,7 +502,7 @@
                                 <div class="mt-2 flex space-x-2">
                                     <span class="inline-flex items-center text-xs">
                                         <svg class="mr-1.5 h-3.5 w-3.5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                                            <path fill-rule="evenodd" d="M18 10c0 3.866-3.582 7-8 7a8.841 8.841 0 01-4.083-.98L2 17l1.338-3.123C2.493 12.767 2 11.434 2 10c0-3.866 3.582-7 8-7s8 3.134 8 7zM7 9H5v2h2V9zm8 0h-2v2h2V9zM9 9h2v2H9V9z" clip-rule="evenodd" />
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                                         </svg>
                                         12 replies
                                     </span>
@@ -675,58 +677,26 @@
         </div>
     </footer>
 
-    <!-- Wallet Modal -->
-    <div id="walletModal" class="hidden fixed inset-0 overflow-y-auto z-50">
-        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div class="fixed inset-0 transition-opacity" aria-hidden="true">
-                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
-            </div>
-            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true"></span>
-            <div class="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-sm sm:w-full sm:p-6">
-                <div>
-                    <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-purple-100">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
-                    </div>
-                    <div class="mt-3 text-center sm:mt-5">
-                        <h3 class="text-lg leading-6 font-medium text-gray-900">Connect Your Wallet</h3>
-                        <div class="mt-2">
-                            <p class="text-sm text-gray-500">Scan the QR code with a WalletConnect-compatible wallet to connect and start learning & earning on Sui.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="mt-5 sm:mt-6 space-y-4">
-                    <div id="walletConnectQR" class="flex justify-center"></div>
-                    <button id="walletConnectBtn" class="w-full flex items-center justify-center px-4 py-3 border border-gray-300 shadow-sm text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
-                        <img src="/assets/images/walletconnect-logo.png" class="h-6 w-6 mr-2" alt="WalletConnect">
-                        Connect via WalletConnect
-                    </button>
-                </div>
-                <div class="mt-5 sm:mt-6">
-                    <button id="closeWalletModalBtn" type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-purple-600 text-base font-medium text-white hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 sm:text-sm">
-                        Cancel
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <script>
-        // Initialize WalletConnect
-        async function initializeWalletConnect() {
-            const provider = new WalletConnectWeb3Provider({
-                chainId: 1, // Sui testnet chain ID (adjust for mainnet if needed)
-                rpc: {
-                    1: 'https://fullnode.testnet.sui.io'
+        // Initialize Privy
+        const privy = new PrivyClient('YOUR_PRIVY_APP_ID', {
+            loginMethods: ['wallet', 'email', 'google', 'twitter'],
+            embeddedWallets: {
+                createOnLogin: 'all-users',
+                requireUserPasswordOnCreate: false,
+                noPromptOnSignature: true,
+            },
+            supportedChains: [
+                {
+                    chainId: 'sui:devnet',
+                    rpcUrl: 'https://fullnode.devnet.sui.io',
                 },
-                qrcode: true,
-                qrcodeModalOptions: {
-                    mobileLinks: ['sui_wallet', 'martian_wallet', 'ethos_wallet']
-                }
-            });
-            return provider;
-        }
+                {
+                    chainId: 'sui:testnet',
+                    rpcUrl: 'https://fullnode.testnet.sui.io',
+                },
+            ],
+        });
 
         // Fetch user balance
         async function fetchUserBalance(address) {
@@ -777,29 +747,23 @@
             document.getElementById('mobileConnectWalletBtn')
         ];
 
-        const walletModal = document.getElementById('walletModal');
-        const closeWalletModalBtn = document.getElementById('closeWalletModalBtn');
-        const walletConnectBtn = document.getElementById('walletConnectBtn');
-
-        // Show wallet modal
-        connectWalletBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                walletModal.classList.remove('hidden');
-            });
-        });
-
-        // Close wallet modal
-        closeWalletModalBtn.addEventListener('click', () => {
-            walletModal.classList.add('hidden');
-        });
-
-        // Connect to wallet via WalletConnect
+        // Connect to wallet via Privy
         async function connectWallet() {
             try {
-                const provider = await initializeWalletConnect();
-                await provider.enable(); // Initiates WalletConnect session (shows QR code)
-                const accounts = await provider.request({ method: 'eth_accounts' });
-                const walletAddress = accounts[0];
+                // Trigger Privy login modal
+                const { user } = await privy.login();
+                let walletAddress;
+
+                // Check if user connected a wallet or has an embedded wallet
+                if (user.wallet) {
+                    walletAddress = user.wallet.address;
+                } else {
+                    // Create or retrieve embedded wallet
+                    const embeddedWallet = await privy.getOrCreateWallet(user.id, 'sui:testnet');
+                    walletAddress = embeddedWallet.address;
+                }
+
+                // Fetch balance and rewards
                 const balance = await fetchUserBalance(walletAddress);
                 const rewards = await fetchUserRewards(walletAddress);
 
@@ -820,7 +784,6 @@
                 // Store wallet address for courses.html
                 sessionStorage.setItem('walletAddress', walletAddress);
 
-                walletModal.classList.add('hidden');
                 showNotification('Wallet connected successfully! Redirecting to courses...');
 
                 // Redirect to courses.html
@@ -833,8 +796,10 @@
             }
         }
 
-        // WalletConnect button listener
-        walletConnectBtn.addEventListener('click', connectWallet);
+        // Attach connectWallet to all connect buttons
+        connectWalletBtns.forEach(btn => {
+            btn.addEventListener('click', connectWallet);
+        });
 
         // Claim rewards (requires deployed smart contract)
         document.getElementById('claimRewardsBtn').addEventListener('click', async () => {
@@ -844,23 +809,21 @@
                 return;
             }
 
-            const provider = await initializeWalletConnect();
             try {
-                const tx = {
-                    kind: 'moveCall',
-                    data: {
-                        packageObjectId: 'YOUR_PACKAGE_ID', // Replace with actual package ID
-                        module: 'rewards',
-                        function: 'claim_rewards',
-                        typeArguments: [],
-                        arguments: [walletAddress],
-                    },
-                };
-
-                const result = await provider.request({
-                    method: 'eth_sendTransaction',
-                    params: [tx],
+                const provider = new window.SuiClient({ url: 'https://fullnode.testnet.sui.io' });
+                const tx = new window.TransactionBlock();
+                tx.moveCall({
+                    target: 'YOUR_PACKAGE_ID::rewards::claim_rewards',
+                    arguments: [tx.pure(walletAddress)],
                 });
+
+                const { signature, transactionBlockBytes } = await privy.signTransaction(walletAddress, tx);
+                const result = await provider.executeTransactionBlock({
+                    transactionBlock: transactionBlockBytes,
+                    signature,
+                    options: { showEffects: true },
+                });
+
                 showNotification('Rewards claimed successfully!');
                 const rewards = await fetchUserRewards(walletAddress);
                 document.querySelector('#walletConnectedEarnings .text-lg.font-bold.text-gray-900').textContent = `${rewards.totalEarned} SUI`;
@@ -882,12 +845,11 @@
                     ${
                         type === 'success'
                             ? '<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />'
-                            : '<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414████████
-
-System: .414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
-                                    </svg>
-                                    ${message}
-                                `;
+                            : '<path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />'
+                    }
+                </svg>
+                ${message}
+            `;
             document.body.appendChild(notification);
 
             setTimeout(() => {
