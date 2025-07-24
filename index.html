@@ -17,76 +17,156 @@
         
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f8fafc;
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4, #45b7d1, #96c93d);
+            background-size: 400%;
+            animation: gradientAnimation 15s ease infinite;
+            min-height: 100vh;
         }
-        
+
+        /* Gradient Animation */
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         .gradient-bg {
-            background: linear-gradient(135deg, #6e8efb 0%, #a777e3 100%);
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            box-shadow: 0 0 15px rgba(255, 107, 107, 0.5);
+            transition: all 0.3s ease;
         }
-        
+
+        .gradient-bg:hover {
+            box-shadow: 0 0 25px rgba(255, 107, 107, 0.7);
+            transform: translateY(-2px);
+        }
+
+        .course-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
         .course-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 20px 25px -5px rgba(255, 107, 107, 0.3), 0 10px 10px -5px rgba(78, 205, 196, 0.3);
         }
-        
+
         .nav-link:hover {
-            color: #a777e3;
+            color: #4ecdc4;
+            text-shadow: 0 0 10px rgba(78, 205, 196, 0.7);
         }
-        
-        .progress-ring__circle {
-            transition: stroke-dashoffset 0.5s;
-            transform: rotate(-90deg);
-            transform-origin: 50% 50%;
+
+        /* SUI Spinner */
+        .spinner {
+            display: none;
+            width: 40px;
+            height: 40px;
+            border: 4px solid transparent;
+            border-top: 4px solid #ff6b6b;
+            border-right: 4px solid #4ecdc4;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 10px rgba(255, 107, 107, 0.7), 0 0 20px rgba(78, 205, 196, 0.7);
+            z-index: 1000;
         }
-        
-        @keyframes pulse {
-            0%, 100% {
-                opacity: 1;
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* Button Ripple Effect */
+        .btn-ripple {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-ripple::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300%;
+            height: 300%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%) scale(0);
+            border-radius: 50%;
+            transition: transform 0.5s ease;
+        }
+
+        .btn-ripple:active::after {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        /* Enhanced Blob Animation */
+        .animate-blob {
+            animation: blob 7s ease-in-out infinite;
+        }
+
+        @keyframes blob {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        /* Glassmorphism Header */
+        header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .course-card {
+                padding: 1rem;
             }
-            50% {
-                opacity: 0.5;
+            .gradient-bg {
+                padding: 10px 20px;
+                font-size: 14px;
             }
-        }
-        
-        .animate-pulse {
-            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
     </style>
 </head>
 <body class="min-h-screen">
+    <!-- Spinner -->
+    <div class="spinner" id="spinner"></div>
+
     <!-- Header/Navbar -->
-    <header class="bg-white shadow-sm sticky top-0 z-50">
+    <header class="shadow-sm sticky top-0 z-50">
         <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
                     <div class="flex-shrink-0 flex items-center">
                         <img class="h-8 w-auto" src="/assets/images/sui-logo.png" alt="SuiLearn & Earn">
-                        <span class="ml-2 text-xl font-bold text-gray-900">SuiLearn & Earn</span>
+                        <span class="ml-2 text-xl font-bold text-white">SuiLearn & Earn</span>
                     </div>
                     <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
-                        <a href="#" class="nav-link border-purple-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Home</a>
-                        <a href="#courses" class="nav-link border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Courses</a>
-                        <a href="#earn" class="nav-link border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Earn</a>
-                        <a href="#community" class="nav-link border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Community</a>
+                        <a href="#" class="nav-link border-[#4ecdc4] text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Home</a>
+                        <a href="courses.html" class="nav-link border-transparent text-gray-300 hover:border-[#4ecdc4] hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Courses</a>
+                        <a href="#earn" class="nav-link border-transparent text-gray-300 hover:border-[#4ecdc4] hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Earn</a>
+                        <a href="#community" class="nav-link border-transparent text-gray-300 hover:border-[#4ecdc4] hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Community</a>
                     </div>
                 </div>
                 <div class="hidden sm:ml-6 sm:flex sm:items-center">
-                    <button id="connectWalletBtn" class="gradient-bg text-white px-4 py-2 rounded-md text-sm font-medium hover:opacity-90 transition duration-150 ease-in-out">
-                        Connect Wallet
-                    </button>
+                    <button id="connectWalletBtn" class="gradient-bg btn-ripple text-white px-4 py-2 rounded-md text-sm font-medium">Connect Wallet</button>
                     <div id="walletConnected" class="hidden ml-4 flex items-center">
-                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
-                            <svg class="-ml-0.5 mr-1.5 h-2 w-2 text-purple-400" fill="currentColor" viewBox="0 0 8 8">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#4ecdc4] text-white">
+                            <svg class="-ml-0.5 mr-1.5 h-2 w-2 text-white" fill="currentColor" viewBox="0 0 8 8">
                                 <circle cx="4" cy="4" r="3" />
                             </svg>
                             Connected
                         </span>
-                        <span id="walletAddress" class="ml-2 text-sm font-medium text-gray-700 truncate max-w-xs"></span>
-                        <span id="walletBalance" class="ml-2 text-sm font-medium text-gray-700"></span>
+                        <span id="walletAddress" class="ml-2 text-sm font-medium text-white truncate max-w-xs"></span>
+                        <span id="walletBalance" class="ml-2 text-sm font-medium text-white"></span>
                     </div>
                 </div>
                 <div class="-mr-2 flex items-center sm:hidden">
-                    <button type="button" id="mobileMenuBtn" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-purple-500">
+                    <button type="button" id="mobileMenuBtn" class="inline-flex items-center justify-center p-2 rounded-md text-white hover:text-gray-300 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[#4ecdc4]">
                         <span class="sr-only">Open main menu</span>
                         <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -95,28 +175,24 @@
                 </div>
             </div>
         </nav>
-        
-        <!-- Mobile menu -->
-        <div id="mobileMenu" class="hidden sm:hidden">
+        <div id="mobileMenu" class="hidden sm:hidden bg-gray-800">
             <div class="pt-2 pb-3 space-y-1">
-                <a href="#" class="bg-purple-50 border-purple-500 text-purple-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Home</a>
-                <a href="#courses" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Courses</a>
-                <a href="#earn" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Earn</a>
-                <a href="#community" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Community</a>
+                <a href="#" class="bg-[#4ecdc4] border-[#ff6b6b] text-white block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Home</a>
+                <a href="courses.html" class="border-transparent text-gray-300 hover:bg-gray-700 hover:border-[#4ecdc4] hover:text-white block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Courses</a>
+                <a href="#earn" class="border-transparent text-gray-300 hover:bg-gray-700 hover:border-[#4ecdc4] hover:text-white block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Earn</a>
+                <a href="#community" class="border-transparent text-gray-300 hover:bg-gray-700 hover:border-[#4ecdc4] hover:text-white block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Community</a>
                 <div class="mt-4 px-4">
-                    <button id="mobileConnectWalletBtn" class="gradient-bg text-white w-full px-4 py-2 rounded-md text-sm font-medium hover:opacity-90 transition duration-150 ease-in-out">
-                        Connect Wallet
-                    </button>
+                    <button id="mobileConnectWalletBtn" class="gradient-bg btn-ripple text-white w-full px-4 py-2 rounded-md text-sm font-medium">Connect Wallet</button>
                     <div id="mobileWalletConnected" class="hidden px-4 py-3">
                         <div class="flex items-center">
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
-                                <svg class="-ml-0.5 mr-1.5 h-2 w-2 text-purple-400" fill="currentColor" viewBox="0 0 8 8">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#4ecdc4] text-white">
+                                <svg class="-ml-0.5 mr-1.5 h-2 w-2 text-white" fill="currentColor" viewBox="0 0 8 8">
                                     <circle cx="4" cy="4" r="3" />
                                 </svg>
                                 Connected
                             </span>
-                            <span id="mobileWalletAddress" class="ml-2 text-sm font-medium text-gray-700 truncate max-w-xs"></span>
-                            <span id="mobileWalletBalance" class="ml-2 text-sm font-medium text-gray-700"></span>
+                            <span id="mobileWalletAddress" class="ml-2 text-sm font-medium text-white truncate max-w-xs"></span>
+                            <span id="mobileWalletBalance" class="ml-2 text-sm font-medium text-white"></span>
                         </div>
                     </div>
                 </div>
@@ -129,18 +205,18 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
             <div class="md:flex md:items-center md:justify-between">
                 <div class="md:w-1/2">
-                    <h1 class="text-4xl md:text-5xl font-bold leading-tight mb-4">Learn, Build, Earn</h1>
-                    <p class="text-xl md:text-2xl mb-8">Your Gateway to the Decentralized Future</p>
-                    <p class="text-lg mb-8">Master Web3, AI, and emerging technologies while earning cryptocurrency rewards on the Sui blockchain.</p>
+                    <h1 class="text-4xl md:text-5xl font-bold leading-tight mb-4 text-shadow">Learn, Build, Earn</h1>
+                    <p class="text-xl md:text-2xl mb-8 text-shadow">Your Gateway to the Decentralized Future</p>
+                    <p class="text-lg mb-8 text-shadow">Master Web3, AI, and emerging technologies while earning cryptocurrency rewards on the Sui blockchain.</p>
                     <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-                        <a href="#courses" class="bg-white text-purple-600 px-6 py-3 rounded-lg text-lg font-semibold text-center hover:bg-gray-100 transition duration-150 ease-in-out">Explore Courses</a>
-                        <button id="heroConnectWalletBtn" class="bg-transparent border-2 border-white text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-white hover:text-purple-600 transition duration-150 ease-in-out">Connect Wallet</button>
+                        <a href="courses.html" class="bg-white text-[#ff6b6b] px-6 py-3 rounded-lg text-lg font-semibold text-center hover:bg-gray-100 transition duration-150 ease-in-out btn-ripple">Explore Courses</a>
+                        <button id="heroConnectWalletBtn" class="gradient-bg btn-ripple text-white px-6 py-3 rounded-lg text-lg font-semibold">Connect Wallet</button>
                     </div>
                 </div>
                 <div class="hidden md:block md:w-1/2 mt-8 md:mt-0">
                     <div class="relative">
-                        <div class="absolute -top-8 -left-8 w-64 h-64 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
-                        <div class="absolute -bottom-8 -right-8 w-64 h-64 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+                        <div class="absolute -top-8 -left-8 w-64 h-64 bg-[#ff6b6b] rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
+                        <div class="absolute -bottom-8 -right-8 w-64 h-64 bg-[#4ecdc4] rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
                         <div class="relative">
                             <img src="/assets/images/hero-image.jpg" alt="Learn and Earn" class="w-full h-auto rounded-lg shadow-2xl">
                         </div>
@@ -151,47 +227,45 @@
     </section>
 
     <!-- Stats Section -->
-    <section class="bg-white py-12">
+    <section class="bg-transparent py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="bg-gray-50 p-6 rounded-xl shadow-sm">
+                <div class="course-card p-6 rounded-xl">
                     <div class="flex items-center">
-                        <div class="p-3 rounded-full bg-purple-100 text-purple-600">
-                            <svg xmlns="http://www.w3.org/2000/svg" class=" └
-
-System: h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <div class="p-3 rounded-full bg-[#ff6b6b] text-white">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                             </svg>
                         </div>
                         <div class="ml-4">
-                            <h3 class="text-lg font-medium text-gray-900">50+ Courses</h3>
-                            <p class="mt-1 text-sm text-gray-500">From Web3 fundamentals to advanced topics</p>
+                            <h3 class="text-lg font-medium text-white">50+ Courses</h3>
+                            <p class="mt-1 text-sm text-gray-300">From Web3 fundamentals to advanced topics</p>
                         </div>
                     </div>
                 </div>
-                <div class="bg-gray-50 p-6 rounded-xl shadow-sm">
+                <div class="course-card p-6 rounded-xl">
                     <div class="flex items-center">
-                        <div class="p-3 rounded-full bg-blue-100 text-blue-600">
+                        <div class="p-3 rounded-full bg-[#4ecdc4] text-white">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
                         </div>
                         <div class="ml-4">
-                            <h3 class="text-lg font-medium text-gray-900">1M+ SUI Earned</h3>
-                            <p class="mt-1 text-sm text-gray-500">By our community of learners</p>
+                            <h3 class="text-lg font-medium text-white">1M+ SUI Earned</h3>
+                            <p class="mt-1 text-sm text-gray-300">By our community of learners</p>
                         </div>
                     </div>
                 </div>
-                <div class="bg-gray-50 p-6 rounded-xl shadow-sm">
+                <div class="course-card p-6 rounded-xl">
                     <div class="flex items-center">
-                        <div class="p-3 rounded-full bg-green-100 text-green-600">
+                        <div class="p-3 rounded-full bg-[#45b7d1] text-white">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                             </svg>
                         </div>
                         <div class="ml-4">
-                            <h3 class="text-lg font-medium text-gray-900">100K+ Learners</h3>
-                            <p class="mt-1 text-sm text-gray-500">Building the future of Web3</p>
+                            <h3 class="text-lg font-medium text-white">100K+ Learners</h3>
+                            <p class="mt-1 text-sm text-gray-300">Building the future of Web3</p>
                         </div>
                     </div>
                 </div>
@@ -200,27 +274,26 @@ System: h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
     </section>
 
     <!-- Courses Section -->
-    <section id="courses" class="py-16 bg-gray-50">
+    <section id="courses" class="py-16 bg-transparent">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
-                <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">Start Learning & Earning Today</h2>
-                <p class="mt-3 max-w-2xl mx-auto text-xl text-gray-500 sm:mt-4">Choose from our curated selection of Web3 courses and start earning SUI tokens as you learn.</p>
+                <h2 class="text-3xl font-extrabold text-white sm:text-4xl text-shadow">Start Learning & Earning Today</h2>
+                <p class="mt-3 max-w-2xl mx-auto text-xl text-gray-300 sm:mt-4 text-shadow">Choose from our curated selection of Web3 courses and start earning SUI tokens as you learn.</p>
             </div>
-            
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Course Card 1 -->
-                <div class="course-card bg-white rounded-xl shadow-md overflow-hidden transition duration-300 ease-in-out">
+                <div class="course-card rounded-xl shadow-md overflow-hidden">
                     <div class="relative">
                         <img class="w-full h-48 object-cover" src="/assets/images/sui-move-course.jpg" alt="Sui Move Fundamentals">
-                        <div class="absolute top-2 right-2 bg-purple-600 text-white text-xs font-bold px-2 py-1 rounded-full">Earn: 50 SUI</div>
+                        <div class="absolute top-2 right-2 bg-[#ff6b6b] text-white text-xs font-bold px-2 py-1 rounded-full">Earn: 50 SUI</div>
                     </div>
                     <div class="p-6">
                         <div class="flex items-center">
-                            <span class="inline-block bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full uppercase font-semibold tracking-wide">Beginner</span>
-                            <span class="ml-2 text-gray-500 text-xs">5 Modules</span>
+                            <span class="inline-block bg-[#4ecdc4] text-white text-xs px-2 py-1 rounded-full uppercase font-semibold tracking-wide">Beginner</span>
+                            <span class="ml-2 text-gray-300 text-xs">5 Modules</span>
                         </div>
-                        <h3 class="mt-2 text-xl font-semibold text-gray-900">Sui Move Fundamentals</h3>
-                        <p class="mt-2 text-gray-600">Master the basics of Move language and start building on Sui blockchain.</p>
+                        <h3 class="mt-2 text-xl font-semibold text-white">Sui Move Fundamentals</h3>
+                        <p class="mt-2 text-gray-300">Master the basics of Move language and start building on Sui blockchain.</p>
                         <div class="mt-4 flex items-center justify-between">
                             <div class="flex items-center">
                                 <div class="flex -space-x-1 overflow-hidden">
@@ -228,150 +301,136 @@ System: h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <img class="inline-block h-6 w-6 rounded-full ring-2 ring-white" src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
                                     <img class="inline-block h-6 w-6 rounded-full ring-2 ring-white" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.25&w=256&h=256&q=80" alt="">
                                 </div>
-                                <span class="ml-2 text-sm text-gray-500">1.2K enrolled</span>
+                                <span class="ml-2 text-sm text-gray-300">1.2K enrolled</span>
                             </div>
-                            <button class="gradient-bg text-white px-4 py-2 rounded-md text-sm font-medium hover:opacity-90 transition duration-150 ease-in-out">Start Learning</button>
+                            <button class="gradient-bg btn-ripple text-white px-4 py-2 rounded-md text-sm font-medium" onclick="startLearning()">Start Learning</button>
                         </div>
                     </div>
                 </div>
-                
                 <!-- Course Card 2 -->
-                <div class="course-card bg-white rounded-xl shadow-md overflow-hidden transition duration-300 ease-in-out">
+                <div class="course-card rounded-xl shadow-md overflow-hidden">
                     <div class="relative">
                         <img class="w-full h-48 object-cover" src="/assets/images/defi-course.jpg" alt="DeFi Masterclass">
-                        <div class="absolute top-2 right-2 bg-purple-600 text-white text-xs font-bold px-2 py-1 rounded-full">Earn: 100 SUI</div>
+                        <div class="absolute top-2 right-2 bg-[#ff6b6b] text-white text-xs font-bold px-2 py-1 rounded-full">Earn: 100 SUI</div>
                     </div>
                     <div class="p-6">
                         <div class="flex items-center">
-                            <span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full uppercase font-semibold tracking-wide">Intermediate</span>
-                            <span class="ml-2 text-gray-500 text-xs">8 Modules</span>
+                            <span class="inline-block bg-[#45b7d1] text-white text-xs px-2 py-1 rounded-full uppercase font-semibold tracking-wide">Intermediate</span>
+                            <span class="ml-2 text-gray-300 text-xs">8 Modules</span>
                         </div>
-                        <h3 class="mt-2 text-xl font-semibold text-gray-900">DeFi Masterclass on Sui</h3>
-                        <p class="mt-2 text-gray-600">Learn to build and interact with decentralized finance applications on Sui.</p>
+                        <h3 class="mt-2 text-xl font-semibold text-white">DeFi Masterclass on Sui</h3>
+                        <p class="mt-2 text-gray-300">Learn to build and interact with decentralized finance applications on Sui.</p>
                         <div class="mt-4 flex items-center justify-between">
                             <div class="flex items-center">
                                 <div class="flex -space-x-1 overflow-hidden">
                                     <img class="inline-block h-6 w-6 rounded-full ring-2 ring-white" src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
                                     <img class="inline-block h-6 w-6 rounded-full ring-2 ring-white" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
                                 </div>
-                                <span class="ml-2 text-sm text-gray-500">850 enrolled</span>
+                                <span class="ml-2 text-sm text-gray-300">850 enrolled</span>
                             </div>
-                            <button class="gradient-bg text-white px-4 py-2 rounded-md text-sm font-medium hover:opacity-90 transition duration-150 ease-in-out">Start Learning</button>
+                            <button class="gradient-bg btn-ripple text-white px-4 py-2 rounded-md text-sm font-medium" onclick="startLearning()">Start Learning</button>
                         </div>
                     </div>
                 </div>
-                
                 <!-- Course Card 3 -->
-                <div class="course-card bg-white rounded-xl shadow-md overflow-hidden transition duration-300 ease-in-out">
+                <div class="course-card rounded-xl shadow-md overflow-hidden">
                     <div class="relative">
                         <img class="w-full h-48 object-cover" src="/assets/images/nft-course.jpg" alt="NFT Development">
-                        <div class="absolute top-2 right-2 bg-purple-600 text-white text-xs font-bold px-2 py-1 rounded-full">Earn: 75 SUI</div>
+                        <div class="absolute top-2 right-2 bg-[#ff6b6b] text-white text-xs font-bold px-2 py-1 rounded-full">Earn: 75 SUI</div>
                     </div>
                     <div class="p-6">
                         <div class="flex items-center">
-                            <span class="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full uppercase font-semibold tracking-wide">Beginner</span>
-                            <span class="ml-2 text-gray-500 text-xs">6 Modules</span>
+                            <span class="inline-block bg-[#96c93d] text-white text-xs px-2 py-1 rounded-full uppercase font-semibold tracking-wide">Beginner</span>
+                            <span class="ml-2 text-gray-300 text-xs">6 Modules</span>
                         </div>
-                        <h3 class="mt-2 text-xl font-semibold text-gray-900">NFT Development on Sui</h3>
-                        <p class="mt-2 text-gray-600">Create, mint, and trade NFTs using Sui's unique object-centric model.</p>
+                        <h3 class="mt-2 text-xl font-semibold text-white">NFT Development on Sui</h3>
+                        <p class="mt-2 text-gray-300">Create, mint, and trade NFTs using Sui's unique object-centric model.</p>
                         <div class="mt-4 flex items-center justify-between">
                             <div class="flex items-center">
                                 <div class="flex -space-x-1 overflow-hidden">
                                     <img class="inline-block h-6 w-6 rounded-full ring-2 ring-white" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
                                     <img class="inline-block h-6 w-6 rounded-full ring-2 ring-white" src="https://images.unsplash.com/photo-1517365884913-3c33884b06fa?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
                                 </div>
-                                <span class="ml-2 text-sm text-gray-500">1.5K enrolled</span>
+                                <span class="ml-2 text-sm text-gray-300">1.5K enrolled</span>
                             </div>
-                            <button class="gradient-bg text-white px-4 py-2 rounded-md text-sm font-medium hover:opacity-90 transition duration-150 ease-in-out">Start Learning</button>
+                            <button class="gradient-bg btn-ripple text-white px-4 py-2 rounded-md text-sm font-medium" onclick="startLearning()">Start Learning</button>
                         </div>
                     </div>
                 </div>
             </div>
-            
             <div class="mt-12 text-center">
-                <a href="courses.html" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white gradient-bg hover:opacity-90 transition duration-150 ease-in-out">
-                    View All Courses
-                    <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 -mr-1 h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                    </svg>
-                </a>
+                <a href="courses.html" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white gradient-bg btn-ripple">View All Courses</a>
             </div>
         </div>
     </section>
 
     <!-- How It Works Section -->
-    <section class="py-16 bg-white">
+    <section class="py-16 bg-transparent">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="lg:text-center">
-                <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">How SuiLearn & Earn Works</h2>
-                <p class="mt-4 max-w-2xl text-xl text-gray-500 lg:mx-auto">Learn valuable skills and get rewarded in cryptocurrency - all on the Sui blockchain.</p>
+                <h2 class="text-3xl font-extrabold text-white sm:text-4xl text-shadow">How SuiLearn & Earn Works</h2>
+                <p class="mt-4 max-w-2xl text-xl text-gray-300 lg:mx-auto text-shadow">Learn valuable skills and get rewarded in cryptocurrency - all on the Sui blockchain.</p>
             </div>
-            
             <div class="mt-20">
                 <div class="space-y-10 lg:space-y-0 lg:grid lg:grid-cols-3 lg:gap-x-8 lg:gap-y-10">
                     <!-- Step 1 -->
-                    <div class="relative">
-                        <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-purple-500 text-white">
+                    <div class="relative course-card p-6 rounded-xl">
+                        <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-[#ff6b6b] text-white">
                             <span class="text-xl font-bold">1</span>
                         </div>
                         <div class="ml-16">
-                            <h3 class="text-lg leading-6 font-medium text-gray-900">Connect Your Wallet</h3>
-                            <p class="mt-2 text-base text-gray-500">Connect your Sui-compatible wallet to access the platform and track your learning progress.</p>
+                            <h3 class="text-lg leading-6 font-medium text-white">Connect Your Wallet</h3>
+                            <p class="mt-2 text-base text-gray-300">Connect your Sui-compatible wallet to access the platform and track your learning progress.</p>
                         </div>
                     </div>
-                    
                     <!-- Step 2 -->
-                    <div class="relative">
-                        <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-purple-500 text-white">
+                    <div class="relative course-card p-6 rounded-xl">
+                        <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-[#4ecdc4] text-white">
                             <span class="text-xl font-bold">2</span>
                         </div>
                         <div class="ml-16">
-                            <h3 class="text-lg leading-6 font-medium text-gray-900">Complete Learning Modules</h3>
-                            <p class="mt-2 text-base text-gray-500">Engage with interactive content, videos, quizzes, and coding challenges to master Web3 concepts.</p>
+                            <h3 class="text-lg leading-6 font-medium text-white">Complete Learning Modules</h3>
+                            <p class="mt-2 text-base text-gray-300">Engage with interactive content, videos, quizzes, and coding challenges to master Web3 concepts.</p>
                         </div>
                     </div>
-                    
                     <!-- Step 3 -->
-                    <div class="relative">
-                        <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-purple-500 text-white">
+                    <div class="relative course-card p-6 rounded-xl">
+                        <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-[#45b7d1] text-white">
                             <span class="text-xl font-bold">3</span>
                         </div>
                         <div class="ml-16">
-                            <h3 class="text-lg leading-6 font-medium text-gray-900">Earn Crypto Rewards</h3>
-                            <p class="mt-2 text-base text-gray-500">Get instant SUI token rewards for completing modules, quizzes, and challenges.</p>
+                            <h3 class="text-lg leading-6 font-medium text-white">Earn Crypto Rewards</h3>
+                            <p class="mt-2 text-base text-gray-300">Get instant SUI token rewards for completing modules, quizzes, and challenges.</p>
                         </div>
                     </div>
-                    
                     <!-- Step 4 -->
-                    <div class="relative">
-                        <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-purple-500 text-white">
+                    <div class="relative course-card p-6 rounded-xl">
+                        <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-[#96c93d] text-white">
                             <span class="text-xl font-bold">4</span>
                         </div>
                         <div class="ml-16">
-                            <h3 class="text-lg leading-6 font-medium text-gray-900">Mint Certification NFTs</h3>
-                            <p class="mt-2 text-base text-gray-500">Upon course completion, mint verifiable NFT certificates to showcase your skills.</p>
+                            <h3 class="text-lg leading-6 font-medium text-white">Mint Certification NFTs</h3>
+                            <p class="mt-2 text-base text-gray-300">Upon course completion, mint verifiable NFT certificates to showcase your skills.</p>
                         </div>
                     </div>
-                    
                     <!-- Step 5 -->
-                    <div class="relative">
-                        <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-purple-500 text-white">
+                    <div class="relative course-card p-6 rounded-xl">
+                        <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-[#ff6b6b] text-white">
                             <span class="text-xl font-bold">5</span>
                         </div>
                         <div class="ml-16">
-                            <h3 class="text-lg leading-6 font-medium text-gray-900">Contribute & Earn More</h3>
-                            <p class="mt-2 text-base text-gray-500">Create content, mentor others, or participate in governance to earn additional rewards.</p>
+                            <h3 class="text-lg leading-6 font-medium text-white">Contribute & Earn More</h3>
+                            <p class="mt-2 text-base text-gray-300">Create content, mentor others, or participate in governance to earn additional rewards.</p>
                         </div>
                     </div>
-                    
                     <!-- Step 6 -->
-                    <div class="relative">
-                        <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-purple-500 text-white">
+                    <div class="relative course-card p-6 rounded-xl">
+                        <div class="absolute flex items-center justify-center h-12 w-12 rounded-md bg-[#4ecdc4] text-white">
                             <span class="text-xl font-bold">6</span>
                         </div>
                         <div class="ml-16">
-                            <h3 class="text-lg leading-6 font-medium text-gray-900">Build Your Future</h3>
-                            <p class="mt-2 text-base text-gray-500">Use your verified skills to find jobs, gigs, or build your own projects in the Web3 space.</p>
+                            <h3 class="text-lg leading-6 font-medium text-white">Build Your Future</h3>
+                            <p class="mt-2 text-base text-gray-300">Use your verified skills to find jobs, gigs, or build your own projects in the Web3 space.</p>
                         </div>
                     </div>
                 </div>
@@ -380,83 +439,75 @@ System: h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
     </section>
 
     <!-- Earn Section -->
-    <section id="earn" class="py-16 bg-gray-50">
+    <section id="earn" class="py-16 bg-transparent">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
-                <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">Ways to Earn</h2>
-                <p class="mt-3 max-w-2xl mx-auto text-xl text-gray-500 sm:mt-4">Multiple opportunities to earn SUI tokens while building your Web3 knowledge.</p>
+                <h2 class="text-3xl font-extrabold text-white sm:text-4xl text-shadow">Ways to Earn</h2>
+                <p class="mt-3 max-w-2xl mx-auto text-xl text-gray-300 sm:mt-4 text-shadow">Multiple opportunities to earn SUI tokens while building your Web3 knowledge.</p>
             </div>
-            
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Earn Card 1 -->
-                <div class="bg-white p-6 rounded-xl shadow-sm">
-                    <div class="flex items-center justify-center h-12 w-12 rounded-md bg-purple-100 text-purple-600">
+                <div class="course-card p-6 rounded-xl">
+                    <div class="flex items-center justify-center h-12 w-12 rounded-md bg-[#ff6b6b] text-white">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                         </svg>
                     </div>
-                    <h3 class="mt-4 text-lg font-medium text-gray-900">Learning Rewards</h3>
-                    <p class="mt-2 text-base text-gray-500">Earn SUI tokens for completing courses, modules, and quizzes. The more you learn, the more you earn!</p>
+                    <h3 class="mt-4 text-lg font-medium text-white">Learning Rewards</h3>
+                    <p class="mt-2 text-base text-gray-300">Earn SUI tokens for completing courses, modules, and quizzes. The more you learn, the more you earn!</p>
                     <div class="mt-4">
-                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-purple-100 text-purple-800">Up to 100 SUI per course</span>
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-[#4ecdc4] text-white">Up to 100 SUI per course</span>
                     </div>
                 </div>
-                
                 <!-- Earn Card 2 -->
-                <div class="bg-white p-6 rounded-xl shadow-sm">
-                    <div class="flex items-center justify-center h-12 w-12 rounded-md bg-blue-100 text-blue-600">
+                <div class="course-card p-6 rounded-xl">
+                    <div class="flex items-center justify-center h-12 w-12 rounded-md bg-[#4ecdc4] text-white">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
                         </svg>
                     </div>
-                    <h3 class="mt-4 text-lg font-medium text-gray-900">Skill Challenges</h3>
-                    <p class="mt-2 text-base text-gray-500">Complete coding challenges, build dApps, or audit smart contracts for bonus rewards.</p>
+                    <h3 class="mt-4 text-lg font-medium text-white">Skill Challenges</h3>
+                    <p class="mt-2 text-base text-gray-300">Complete coding challenges, build dApps, or audit smart contracts for bonus rewards.</p>
                     <div class="mt-4">
-                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800">50-500 SUI per challenge</span>
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-[#45b7d1] text-white">50-500 SUI per challenge</span>
                     </div>
                 </div>
-                
                 <!-- Earn Card 3 -->
-                <div class="bg-white p-6 rounded-xl shadow-sm">
-                    <div class="flex items-center justify-center h-12 w-12 rounded-md bg-green-100 text-green-600">
+                <div class="course-card p-6 rounded-xl">
+                    <div class="flex items-center justify-center h-12 w-12 rounded-md bg-[#96c93d] text-white">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
                         </svg>
                     </div>
-                    <h3 class="mt-4 text-lg font-medium text-gray-900">Community Contributions</h3>
-                    <p class="mt-2 text-base text-gray-500">Create tutorials, answer questions, or mentor others to earn additional SUI tokens.</p>
+                    <h3 class="mt-4 text-lg font-medium text-white">Community Contributions</h3>
+                    <p class="mt-2 text-base text-gray-300">Create tutorials, answer questions, or mentor others to earn additional SUI tokens.</p>
                     <div class="mt-4">
-                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">10-200 SUI per contribution</span>
+                        <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-[#ff6b6b] text-white">10-200 SUI per contribution</span>
                     </div>
                 </div>
             </div>
-            
-            <div class="mt-12 bg-white rounded-xl shadow-md overflow-hidden">
+            <div class="mt-12 course-card rounded-xl shadow-md overflow-hidden">
                 <div class="p-6 md:p-8">
                     <div class="md:flex md:items-center md:justify-between">
                         <div class="md:w-2/3">
-                            <h3 class="text-xl font-bold text-gray-900">Your Learning Earnings</h3>
-                            <p class="mt-2 text-gray-600">Connect your wallet to see your earned SUI tokens and track your progress.</p>
+                            <h3 class="text-xl font-bold text-white">Your Learning Earnings</h3>
+                            <p class="mt-2 text-gray-300">Connect your wallet to see your earned SUI tokens and track your progress.</p>
                         </div>
                         <div class="mt-4 md:mt-0 md:w-1/3">
                             <div id="walletNotConnectedEarnings" class="text-center">
-                                <button id="earningsConnectWalletBtn" class="gradient-bg text-white w-full px-4 py-3 rounded-md text-sm font-medium hover:opacity-90 transition duration-150 ease-in-out">
-                                    Connect Wallet to View Earnings
-                                </button>
+                                <button id="earningsConnectWalletBtn" class="gradient-bg btn-ripple text-white w-full px-4 py-3 rounded-md text-sm font-medium">Connect Wallet to View Earnings</button>
                             </div>
                             <div id="walletConnectedEarnings" class="hidden">
-                                <div class="bg-gray-50 p-4 rounded-lg">
+                                <div class="bg-transparent p-4 rounded-lg">
                                     <div class="flex items-center justify-between">
-                                        <span class="text-sm font-medium text-gray-500">Total Earned</span>
-                                        <span class="text-lg font-bold text-gray-900">0 SUI</span>
+                                        <span class="text-sm font-medium text-gray-300">Total Earned</span>
+                                        <span class="text-lg font-bold text-white">0 SUI</span>
                                     </div>
                                     <div class="mt-2 flex items-center justify-between">
-                                        <span class="text-sm font-medium text-gray-500">Available to Claim</span>
-                                        <span class="text-lg font-bold text-purple-600">0 SUI</span>
+                                        <span class="text-sm font-medium text-gray-300">Available to Claim</span>
+                                        <span class="text-lg font-bold text-[#4ecdc4]">0 SUI</span>
                                     </div>
-                                    <button id="claimRewardsBtn" class="mt-4 gradient-bg text-white w-full px-4 py-2 rounded-md text-sm font-medium hover:opacity-90 transition duration-150 ease-in-out">
-                                        Claim Rewards
-                                    </button>
+                                    <button id="claimRewardsBtn" class="mt-4 gradient-bg btn-ripple text-white w-full px-4 py-2 rounded-md text-sm font-medium">Claim Rewards</button>
                                 </div>
                             </div>
                         </div>
@@ -467,24 +518,23 @@ System: h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
     </section>
 
     <!-- Community Section -->
-    <section id="community" class="py-16 bg-white">
+    <section id="community" class="py-16 bg-transparent">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
-                <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">Join Our Community</h2>
-                <p class="mt-3 max-w-2xl mx-auto text-xl text-gray-500 sm:mt-4">Connect with fellow learners, share knowledge, and grow together in the Web3 space.</p>
+                <h2 class="text-3xl font-extrabold text-white sm:text-4xl text-shadow">Join Our Community</h2>
+                <p class="mt-3 max-w-2xl mx-auto text-xl text-gray-300 sm:mt-4 text-shadow">Connect with fellow learners, share knowledge, and grow together in the Web3 space.</p>
             </div>
-            
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="bg-gray-50 p-6 rounded-xl shadow-sm">
+                <div class="course-card p-6 rounded-xl">
                     <div class="flex items-center">
-                        <div class="flex-shrink-0 bg-purple-100 p-3 rounded-lg text-purple-600">
+                        <div class="flex-shrink-0 bg-[#ff6b6b] p-3 rounded-lg text-white">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                             </svg>
                         </div>
                         <div class="ml-4">
-                            <h3 class="text-lg font-medium text-gray-900">Discussion Forums</h3>
-                            <p class="mt-1 text-sm text-gray-500">Ask questions, share insights, and collaborate with other learners.</p>
+                            <h3 class="text-lg font-medium text-white">Discussion Forums</h3>
+                            <p class="mt-1 text-sm text-gray-300">Ask questions, share insights, and collaborate with other learners.</p>
                         </div>
                     </div>
                     <div class="mt-6">
@@ -493,21 +543,21 @@ System: h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <img class="h-10 w-10 rounded-full" src="https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
                             </div>
                             <div class="min-w-0 flex-1">
-                                <div class="text-sm font-medium text-gray-900">
+                                <div class="text-sm font-medium text-white">
                                     <a href="#" class="hover:underline">Jane Cooper</a>
                                 </div>
-                                <div class="text-sm text-gray-500">
+                                <div class="text-sm text-gray-300">
                                     <p>Just completed the Sui Move Fundamentals course! The object model explanation was super clear. Any recommendations for what to learn next?</p>
                                 </div>
                                 <div class="mt-2 flex space-x-2">
-                                    <span class="inline-flex items-center text-xs">
-                                        <svg class="mr-1.5 h-3.5 w-3.5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                    <span class="inline-flex items-center text-xs text-gray-300">
+                                        <svg class="mr-1.5 h-3.5 w-3.5 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
                                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                                         </svg>
                                         12 replies
                                     </span>
-                                    <span class="inline-flex items-center text-xs">
-                                        <svg class="mr-1.5 h-3.5 w-3.5 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                    <span class="inline-flex items-center text-xs text-gray-300">
+                                        <svg class="mr-1.5 h-3.5 w-3.5 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
                                             <path fill-rule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clip-rule="evenodd" />
                                         </svg>
                                         24 likes
@@ -517,80 +567,69 @@ System: h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         </div>
                     </div>
                     <div class="mt-4">
-                        <button class="w-full border border-gray-300 rounded-md px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
-                            View All Discussions
-                        </button>
+                        <button class="w-full border border-[#4ecdc4] rounded-md px-4 py-2 text-sm font-medium text-white hover:bg-[#4ecdc4] btn-ripple">View All Discussions</button>
                     </div>
                 </div>
-                
-                <div class="bg-gray-50 p-6 rounded-xl shadow-sm">
+                <div class="course-card p-6 rounded-xl">
                     <div class="flex items-center">
-                        <div class="flex-shrink-0 bg-blue-100 p-3 rounded-lg text-blue-600">
+                        <div class="flex-shrink-0 bg-[#4ecdc4] p-3 rounded-lg text-white">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                             </svg>
                         </div>
                         <div class="ml-4">
-                            <h3 class="text-lg font-medium text-gray-900">Leaderboard</h3>
-                            <p class="mt-1 text-sm text-gray-500">See who's earning the most and get inspired to climb the ranks.</p>
+                            <h3 class="text-lg font-medium text-white">Leaderboard</h3>
+                            <p class="mt-1 text-sm text-gray-300">See who's earning the most and get inspired to climb the ranks.</p>
                         </div>
                     </div>
                     <div class="mt-6">
-                        <ul class="divide-y divide-gray-200">
+                        <ul class="divide-y divide-gray-700">
                             <li class="py-3">
                                 <div class="flex items-center space-x-4">
                                     <div class="flex-shrink-0">
-                                        <span class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-purple-500 text-white font-bold">1</span>
+                                        <span class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-[#ff6b6b] text-white font-bold">1</span>
                                     </div>
                                     <div class="flex-1 min-w-0">
-                                        <p class="text-sm font-medium text-gray-900 truncate">Alex Johnson</p>
-                                        <p class="text-sm text-gray-500 truncate">1,245 SUI earned</p>
+                                        <p class="text-sm font-medium text-white truncate">Alex Johnson</p>
+                                        <p class="text-sm text-gray-300 truncate">1,245 SUI earned</p>
                                     </div>
                                     <div>
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                                            Top Learner
-                                        </span>
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#4ecdc4] text-white">Top Learner</span>
                                     </div>
                                 </div>
                             </li>
                             <li class="py-3">
                                 <div class="flex items-center space-x-4">
                                     <div class="flex-shrink-0">
-                                        <span class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-blue-500 text-white font-bold">2</span>
+                                        <span class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-[#45b7d1] text-white font-bold">2</span>
                                     </div>
                                     <div class="flex-1 min-w-0">
-                                        <p class="text-sm font-medium text-gray-900 truncate">Sam Wilson</p>
-                                        <p class="text-sm text-gray-500 truncate">982 SUI earned</p>
+                                        <p class="text-sm font-medium text-white truncate">Sam Wilson</p>
+                                        <p class="text-sm text-gray-300 truncate">982 SUI earned</p>
                                     </div>
                                     <div>
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
-                                            Active Contributor
-                                        </span>
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#45b7d1] text-white">Active Contributor</span>
                                     </div>
                                 </div>
                             </li>
                             <li class="py-3">
                                 <div class="flex items-center space-x-4">
                                     <div class="flex-shrink-0">
-                                        <span class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-yellow-500 text-white font-bold">3</span>
+                                        <span class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-[#96c93d] text-white font-bold">3</span>
                                     </div>
                                     <div class="flex-1 min-w-0">
-                                        <p class="text-sm font-medium text-gray-900 truncate">Taylor Smith</p>
-                                        <p class="text-sm text-gray-500 truncate">875 SUI earned</p>
+                                        <p class="text-sm font-medium text-white truncate">Taylor Smith</p>
+                                        <p class="text-sm text-gray-300 truncate">875 SUI earned</p>
                                     </div>
                                     <div>
-                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">
-                                            Rising Star
-                                        </span>
+                                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#96c93d] text-white">Rising Star</span>
                                     </div>
                                 </div>
                             </li>
                         </ul>
                     </div>
                     <div class="mt-4">
-                        <button class="w-full border border-gray-300 rounded-md px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-                            View Full Leaderboard
-                        </button>
+                        <button class="w-full border border-[#4ecdc4] rounded-md px-4 py-2 text-sm font-medium text-white hover:bg-[#4ecdc4] btn-ripple">View Full Leaderboard</button>
                     </div>
                 </div>
             </div>
@@ -600,11 +639,11 @@ System: h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
     <!-- CTA Section -->
     <section class="gradient-bg text-white py-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 class="text-3xl font-extrabold sm:text-4xl">Ready to Start Learning & Earning?</h2>
-            <p class="mt-4 text-xl max-w-2xl mx-auto">Join thousands of learners building the future of Web3 on Sui.</p>
+            <h2 class="text-3xl font-extrabold sm:text-4xl text-shadow">Ready to Start Learning & Earning?</h2>
+            <p class="mt-4 text-xl max-w-2xl mx-auto text-shadow">Join thousands of learners building the future of Web3 on Sui.</p>
             <div class="mt-8 flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-                <button id="finalConnectWalletBtn" class="bg-white text-purple-600 px-6 py-3 rounded-lg text-lg font-semibold hover:bg-gray-100 transition duration-150 ease-in-out">Connect Wallet</button>
-                <a href="#courses" class="bg-transparent border-2 border-white text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-white hover:text-purple-600 transition duration-150 ease-in-out">Explore Courses</a>
+                <button id="finalConnectWalletBtn" class="gradient-bg btn-ripple text-white px-6 py-3 rounded-lg text-lg font-semibold">Connect Wallet</button>
+                <a href="courses.html" class="bg-transparent border-2 border-white text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-white hover:text-[#ff6b6b] btn-ripple">Explore Courses</a>
             </div>
         </div>
     </section>
@@ -686,6 +725,10 @@ System: h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 requireUserPasswordOnCreate: false,
                 noPromptOnSignature: true,
             },
+            appearance: {
+                theme: 'dark',
+                accentColor: '#ff6b6b',
+            },
             supportedChains: [
                 {
                     chainId: 'sui:devnet',
@@ -697,6 +740,15 @@ System: h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 },
             ],
         });
+
+        // Spinner Functions
+        function showSpinner() {
+            document.getElementById('spinner').style.display = 'block';
+        }
+
+        function hideSpinner() {
+            document.getElementById('spinner').style.display = 'none';
+        }
 
         // Fetch user balance
         async function fetchUserBalance(address) {
@@ -712,7 +764,7 @@ System: h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             }
         }
 
-        // Fetch user rewards (optional, requires deployed smart contract)
+        // Fetch user rewards (placeholder, requires smart contract)
         async function fetchUserRewards(address) {
             const provider = new window.SuiClient({ url: 'https://fullnode.testnet.sui.io' });
             try {
@@ -747,23 +799,19 @@ System: h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             document.getElementById('mobileConnectWalletBtn')
         ];
 
-        // Connect to wallet via Privy
         async function connectWallet() {
+            showSpinner();
             try {
-                // Trigger Privy login modal
                 const { user } = await privy.login();
                 let walletAddress;
 
-                // Check if user connected a wallet or has an embedded wallet
                 if (user.wallet) {
                     walletAddress = user.wallet.address;
                 } else {
-                    // Create or retrieve embedded wallet
                     const embeddedWallet = await privy.getOrCreateWallet(user.id, 'sui:testnet');
                     walletAddress = embeddedWallet.address;
                 }
 
-                // Fetch balance and rewards
                 const balance = await fetchUserBalance(walletAddress);
                 const rewards = await fetchUserRewards(walletAddress);
 
@@ -778,34 +826,34 @@ System: h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 
                 document.getElementById('walletNotConnectedEarnings').classList.add('hidden');
                 document.getElementById('walletConnectedEarnings').classList.remove('hidden');
-                document.querySelector('#walletConnectedEarnings .text-lg.font-bold.text-gray-900').textContent = `${rewards.totalEarned} SUI`;
-                document.querySelector('#walletConnectedEarnings .text-lg.font-bold.text-purple-600').textContent = `${rewards.availableToClaim} SUI`;
+                document.querySelector('#walletConnectedEarnings .text-lg.font-bold.text-white').textContent = `${rewards.totalEarned} SUI`;
+                document.querySelector('#walletConnectedEarnings .text-lg.font-bold.text-[#4ecdc4]').textContent = `${rewards.availableToClaim} SUI`;
 
-                // Store wallet address for courses.html
                 sessionStorage.setItem('walletAddress', walletAddress);
 
                 showNotification('Wallet connected successfully! Redirecting to courses...');
-
-                // Redirect to courses.html
                 setTimeout(() => {
                     window.location.href = 'courses.html';
                 }, 2000);
             } catch (error) {
                 console.error('Wallet connection error:', error);
                 showNotification('Failed to connect wallet. Please try again.', 'error');
+            } finally {
+                hideSpinner();
             }
         }
 
-        // Attach connectWallet to all connect buttons
         connectWalletBtns.forEach(btn => {
             btn.addEventListener('click', connectWallet);
         });
 
-        // Claim rewards (requires deployed smart contract)
+        // Claim rewards
         document.getElementById('claimRewardsBtn').addEventListener('click', async () => {
+            showSpinner();
             const walletAddress = sessionStorage.getItem('walletAddress');
             if (!walletAddress) {
                 showNotification('No wallet connected!', 'error');
+                hideSpinner();
                 return;
             }
 
@@ -826,19 +874,30 @@ System: h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 
                 showNotification('Rewards claimed successfully!');
                 const rewards = await fetchUserRewards(walletAddress);
-                document.querySelector('#walletConnectedEarnings .text-lg.font-bold.text-gray-900').textContent = `${rewards.totalEarned} SUI`;
-                document.querySelector('#walletConnectedEarnings .text-lg.font-bold.text-purple-600').textContent = `${rewards.availableToClaim} SUI`;
+                document.querySelector('#walletConnectedEarnings .text-lg.font-bold.text-white').textContent = `${rewards.totalEarned} SUI`;
+                document.querySelector('#walletConnectedEarnings .text-lg.font-bold.text-[#4ecdc4]').textContent = `${rewards.availableToClaim} SUI`;
             } catch (error) {
                 console.error('Error claiming rewards:', error);
                 showNotification('Failed to claim rewards.', 'error');
+            } finally {
+                hideSpinner();
             }
         });
+
+        // Start learning with spinner
+        async function startLearning() {
+            showSpinner();
+            setTimeout(() => {
+                hideSpinner();
+                showNotification('Starting course...');
+            }, 2000);
+        }
 
         // Notification function
         function showNotification(message, type = 'success') {
             const notification = document.createElement('div');
             notification.className = `fixed bottom-4 right-4 px-4 py-2 rounded-md shadow-lg flex items-center ${
-                type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+                type === 'success' ? 'bg-[#4ecdc4] text-white' : 'bg-[#ff6b6b] text-white'
             }`;
             notification.innerHTML = `
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
@@ -872,16 +931,13 @@ System: h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                
                 const targetId = this.getAttribute('href');
                 if (targetId === '#') return;
-                
                 const targetElement = document.querySelector(targetId);
                 if (targetElement) {
                     targetElement.scrollIntoView({
                         behavior: 'smooth'
                     });
-                    
                     if (!mobileMenu.classList.contains('hidden')) {
                         mobileMenu.classList.add('hidden');
                     }
