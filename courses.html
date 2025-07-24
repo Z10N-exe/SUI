@@ -6,62 +6,153 @@
     <title>SuiLearn & Earn | Courses</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Sui.js SDK -->
     <script src="https://unpkg.com/@mysten/sui.js@latest/dist/index.js"></script>
-    <script src="https://unpkg.com/@mysten/wallet-standard@latest/dist/index.js"></script>
+    <!-- Privy SDK -->
+    <script src="https://unpkg.com/@privy-io/react-auth@latest/dist/index.umd.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f8fafc;
+            background: linear-gradient(135deg, #ff6b6b, #4ecdc4, #45b7d1, #96c93d);
+            background-size: 400%;
+            animation: gradientAnimation 15s ease infinite;
+            min-height: 100vh;
         }
-        
+
+        /* Gradient Animation */
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
         .gradient-bg {
-            background: linear-gradient(135deg, #6e8efb 0%, #a777e3 100%);
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            box-shadow: 0 0 15px rgba(255, 107, 107, 0.5);
+            transition: all 0.3s ease;
         }
-        
+
+        .gradient-bg:hover {
+            box-shadow: 0 0 25px rgba(255, 107, 107, 0.7);
+            transform: translateY(-2px);
+        }
+
+        .course-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
         .course-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 20px 25px -5px rgba(255, 107, 107, 0.3), 0 10px 10px -5px rgba(78, 205, 196, 0.3);
         }
-        
+
         .nav-link:hover {
-            color: #a777e3;
+            color: #4ecdc4;
+            text-shadow: 0 0 10px rgba(78, 205, 196, 0.7);
+        }
+
+        /* SUI Spinner */
+        .spinner {
+            display: none;
+            width: 40px;
+            height: 40px;
+            border: 4px solid transparent;
+            border-top: 4px solid #ff6b6b;
+            border-right: 4px solid #4ecdc4;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 10px rgba(255, 107, 107, 0.7), 0 0 20px rgba(78, 205, 196, 0.7);
+            z-index: 1000;
+        }
+
+        @keyframes spin {
+            0% { transform: translate(-50%, -50%) rotate(0deg); }
+            100% { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        /* Button Ripple Effect */
+        .btn-ripple {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-ripple::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 300%;
+            height: 300%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%) scale(0);
+            border-radius: 50%;
+            transition: transform 0.5s ease;
+        }
+
+        .btn-ripple:active::after {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        /* Glassmorphism Header */
+        header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 600px) {
+            .course-card {
+                padding: 1rem;
+            }
+            .gradient-bg {
+                padding: 10px 20px;
+                font-size: 14px;
+            }
         }
     </style>
 </head>
 <body class="min-h-screen">
+    <!-- Spinner -->
+    <div class="spinner" id="spinner"></div>
+
     <!-- Header/Navbar -->
-    <header class="bg-white shadow-sm sticky top-0 z-50">
+    <header class="shadow-sm sticky top-0 z-50">
         <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
                     <div class="flex-shrink-0 flex items-center">
                         <img class="h-8 w-auto" src="https://sui.io/images/sui-logo.png" alt="SuiLearn & Earn">
-                        <span class="ml-2 text-xl font-bold text-gray-900">SuiLearn & Earn</span>
+                        <span class="ml-2 text-xl font-bold text-white">SuiLearn & Earn</span>
                     </div>
                     <div class="hidden sm:ml-6 sm:flex sm:space-x-8">
-                        <a href="index.html" class="nav-link border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Home</a>
-                        <a href="#" class="nav-link border-purple-500 text-gray-900 inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Courses</a>
+                        <a href="index.html" class="nav-link border-transparent text-gray-300 hover:border-[#4ecdc4] hover:text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Home</a>
+                        <a href="#" class="nav-link border-[#4ecdc4] text-white inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium">Courses</a>
                     </div>
                 </div>
                 <div class="hidden sm:ml-6 sm:flex sm:items-center">
-                    <button id="connectWalletBtn" class="gradient-bg text-white px-4 py-2 rounded-md text-sm font-medium hover:opacity-90 transition duration-150 ease-in-out">
-                        Connect Wallet
-                    </button>
+                    <button id="connectWalletBtn" class="gradient-bg btn-ripple text-white px-4 py-2 rounded-md text-sm font-medium">Connect Wallet</button>
                     <div id="walletConnected" class="hidden ml-4 flex items-center">
-                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
-                            <svg class="-ml-0.5 mr-1.5 h-2 w-2 text-purple-400" fill="currentColor" viewBox="0 0 8 8">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#4ecdc4] text-white">
+                            <svg class="-ml-0.5 mr-1.5 h-2 w-2 text-white" fill="currentColor" viewBox="0 0 8 8">
                                 <circle cx="4" cy="4" r="3" />
                             </svg>
                             Connected
                         </span>
-                        <span id="walletAddress" class="ml-2 text-sm font-medium text-gray-700 truncate max-w-xs"></span>
-                        <span id="walletBalance" class="ml-2 text-sm font-medium text-gray-700"></span>
+                        <span id="walletAddress" class="ml-2 text-sm font-medium text-white truncate max-w-xs"></span>
+                        <span id="walletBalance" class="ml-2 text-sm font-medium text-white"></span>
                     </div>
                 </div>
                 <div class="-mr-2 flex items-center sm:hidden">
-                    <button type="button" id="mobileMenuBtn" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-purple-500">
+                    <button type="button" id="mobileMenuBtn" class="inline-flex items-center justify-center p-2 rounded-md text-white hover:text-gray-300 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[#4ecdc4]">
                         <span class="sr-only">Open main menu</span>
                         <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -70,25 +161,22 @@
                 </div>
             </div>
         </nav>
-        <!-- Mobile menu -->
-        <div id="mobileMenu" class="hidden sm:hidden">
+        <div id="mobileMenu" class="hidden sm:hidden bg-gray-800">
             <div class="pt-2 pb-3 space-y-1">
-                <a href="index.html" class="border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Home</a>
-                <a href="#" class="bg-purple-50 border-purple-500 text-purple-700 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Courses</a>
+                <a href="index.html" class="border-transparent text-gray-300 hover:bg-gray-700 hover:border-[#4ecdc4] hover:text-white block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Home</a>
+                <a href="#" class="bg-[#4ecdc4] border-[#ff6b6b] text-white block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Courses</a>
                 <div class="mt-4 px-4">
-                    <button id="mobileConnectWalletBtn" class="gradient-bg text-white w-full px-4 py-2 rounded-md text-sm font-medium hover:opacity-90 transition duration-150 ease-in-out">
-                        Connect Wallet
-                    </button>
+                    <button id="mobileConnectWalletBtn" class="gradient-bg btn-ripple text-white w-full px-4 py-2 rounded-md text-sm font-medium">Connect Wallet</button>
                     <div id="mobileWalletConnected" class="hidden px-4 py-3">
                         <div class="flex items-center">
-                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800">
-                                <svg class="-ml-0.5 mr-1.5 h-2 w-2 text-purple-400" fill="currentColor" viewBox="0 0 8 8">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#4ecdc4] text-white">
+                                <svg class="-ml-0.5 mr-1.5 h-2 w-2 text-white" fill="currentColor" viewBox="0 0 8 8">
                                     <circle cx="4" cy="4" r="3" />
                                 </svg>
                                 Connected
                             </span>
-                            <span id="mobileWalletAddress" class="ml-2 text-sm font-medium text-gray-700 truncate max-w-xs"></span>
-                            <span id="mobileWalletBalance" class="ml-2 text-sm font-medium text-gray-700"></span>
+                            <span id="mobileWalletAddress" class="ml-2 text-sm font-medium text-white truncate max-w-xs"></span>
+                            <span id="mobileWalletBalance" class="ml-2 text-sm font-medium text-white"></span>
                         </div>
                     </div>
                 </div>
@@ -97,62 +185,17 @@
     </header>
 
     <!-- Courses Section -->
-    <section id="courses" class="py-16 bg-gray-50">
+    <section id="courses" class="py-16 bg-transparent">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-12">
-                <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">Sui Blockchain Courses</h2>
-                <p class="mt-3 max-w-2xl mx-auto text-xl text-gray-500 sm:mt-4">Explore our curated selection of courses to master Web3 and Sui blockchain development.</p>
+                <h2 class="text-3xl font-extrabold text-white sm:text-4xl text-shadow">Sui Blockchain Courses</h2>
+                <p class="mt-3 max-w-2xl mx-auto text-xl text-gray-300 sm:mt-4 text-shadow">Explore our curated selection of courses to master Web3 and Sui blockchain development.</p>
             </div>
-            
             <div id="courseList" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 <!-- Courses will be dynamically inserted here -->
             </div>
         </div>
     </section>
-
-    <!-- Wallet Modal -->
-    <div id="walletModal" class="hidden fixed inset-0 overflow-y-auto z-50">
-        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-            <div class="fixed inset-0 transition-opacity" aria-hidden="true">
-                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
-            </div>
-            <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">&#8203;</span>
-            <div class="inline-block align-bottom bg-white rounded-lg px-4 pt-5 pb-4 text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-sm sm:w-full sm:p-6">
-                <div>
-                    <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-purple-100">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                        </svg>
-                    </div>
-                    <div class="mt-3 text-center sm:mt-5">
-                        <h3 class="text-lg leading-6 font-medium text-gray-900">Connect Your Wallet</h3>
-                        <div class="mt-2">
-                            <p class="text-sm text-gray-500">Choose a wallet to connect and view your SUI balance and courses.</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="mt-5 sm:mt-6 space-y-4">
-                    <button id="suiWalletBtn" class="w-full flex items-center justify-center px-4 py-3 border border-gray-300 shadow-sm text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
-                        <img src="https://sui.io/images/sui-wallet.png" class="h-6 w-6 mr-2" alt="Sui Wallet">
-                        Sui Wallet
-                    </button>
-                    <button id="martianWalletBtn" class="w-full flex items-center justify-center px-4 py-3 border border-gray-300 shadow-sm text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
-                        <img src="https://martianwallet.io/logo.png" class="h-6 w-6 mr-2" alt="Martian Wallet">
-                        Martian Wallet
-                    </button>
-                    <button id="ethosWalletBtn" class="w-full flex items-center justify-center px-4 py-3 border border-gray-300 shadow-sm text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
-                        <img src="https://ethoswallet.xyz/logo.png" class="h-6 w-6 mr-2" alt="Ethos Wallet">
-                        Ethos Wallet
-                    </button>
-                </div>
-                <div class="mt-5 sm:mt-6">
-                    <button id="closeWalletModalBtn" type="button" class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4†py-2 bg-purple-600 text-base font-medium text-white hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 sm:text-sm">
-                        Cancel
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <script>
         // Course data from https://sui.io/developers
@@ -186,50 +229,44 @@
             }
         ];
 
-        // Render courses
-        function renderCourses() {
-            const courseList = document.getElementById('courseList');
-            courseList.innerHTML = courses.map(course => `
-                <div class="course-card bg-white rounded-xl shadow-md overflow-hidden transition duration-300 ease-in-out">
-                    <div class="relative">
-                        <img class="w-full h-48 object-cover" src="${course.image}" alt="${course.title}">
-                        <div class="absolute top-2 right-2 bg-purple-600 text-white text-xs font-bold px-2 py-1 rounded-full">Earn: ${course.earn}</div>
-                    </div>
-                    <div class="p-6">
-                        <div class="flex items-center">
-                            <span class="inline-block bg-${course.level === 'Beginner' ? 'green' : 'blue'}-100 text-${course.level === 'Beginner' ? 'green' : 'blue'}-800 text-xs px-2 py-1 rounded-full uppercase font-semibold tracking-wide">${course.level}</span>
-                            <span class="ml-2 text-gray-500 text-xs">${course.modules} Modules</span>
-                        </div>
-                        <h3 class="mt-2 text-xl font-semibold text-gray-900">${course.title}</h3>
-                        <p class="mt-2 text-gray-600">${course.description}</p>
-                        <div class="mt-4 flex items-center justify-between">
-                            <div class="flex items-center">
-                                <div class="flex -space-x-1 overflow-hidden">
-                                    <img class="inline-block h-6 w-6 rounded-full ring-2 ring-white" src="https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
-                                    <img class="inline-block h-6 w-6 rounded-full ring-2 ring-white" src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
-                                    <img class="inline-block h-6 w-6 rounded-full ring-2 ring-white" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2.25&w=256&h=256&q=80" alt="">
-                                </div>
-                                <span class="ml-2 text-sm text-gray-500">${course.enrolled} enrolled</span>
-                            </div>
-                            <button class="gradient-bg text-white px-4 py-2 rounded-md text-sm font-medium hover:opacity-90 transition duration-150 ease-in-out">Start Learning</button>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
+        // Initialize Privy
+        const privy = new PrivyClient('cmdhj4xqn00dkl40mpv9axe5c', {
+            loginMethods: ['wallet', 'email', 'google', 'twitter'],
+            embeddedWallets: {
+                createOnLogin: 'all-users',
+                requireUserPasswordOnCreate: false,
+                noPromptOnSignature: true,
+            },
+            appearance: {
+                theme: 'dark',
+                accentColor: '#ff6b6b',
+            },
+            supportedChains: [
+                {
+                    chainId: 'sui:devnet',
+                    rpcUrl: 'https://fullnode.devnet.sui.io',
+                },
+                {
+                    chainId: 'sui:testnet',
+                    rpcUrl: 'https://fullnode.testnet.sui.io',
+                },
+            ],
+        });
+
+        // Spinner Functions
+        function showSpinner() {
+            document.getElementById('spinner').style.display = 'block';
         }
 
-        // Initialize Sui Wallet Standard
-        async function initializeWalletAdapter() {
-            const { getWallets } = window.Mysten.WalletStandard;
-            return getWallets();
+        function hideSpinner() {
+            document.getElementById('spinner').style.display = 'none';
         }
 
         // Fetch user balance
-        async function fetchUserBalance(wallet) {
+        async function fetchUserBalance(address) {
             const provider = new window.SuiClient({ url: 'https://fullnode.testnet.sui.io' });
-            const userAddress = wallet.accounts[0].address;
             try {
-                const balanceResponse = await provider.getBalance({ owner: userAddress });
+                const balanceResponse = await provider.getBalance({ owner: address });
                 const suiBalance = Number.parseInt(balanceResponse.totalBalance) / 1_000_000_000; // Convert MIST to SUI
                 return suiBalance.toFixed(2);
             } catch (error) {
@@ -239,48 +276,66 @@
             }
         }
 
+        // Render courses
+        function renderCourses() {
+            const courseList = document.getElementById('courseList');
+            courseList.innerHTML = courses.map(course => `
+                <div class="course-card rounded-xl shadow-md overflow-hidden">
+                    <div class="relative">
+                        <img class="w-full h-48 object-cover" src="${course.image}" alt="${course.title}">
+                        <div class="absolute top-2 right-2 bg-[#ff6b6b] text-white text-xs font-bold px-2 py-1 rounded-full">Earn: ${course.earn}</div>
+                    </div>
+                    <div class="p-6">
+                        <div class="flex items-center">
+                            <span class="inline-block bg-${course.level === 'Beginner' ? '[#96c93d]' : '[#45b7d1]'} text-white text-xs px-2 py-1 rounded-full uppercase font-semibold tracking-wide">${course.level}</span>
+                            <span class="ml-2 text-gray-300 text-xs">${course.modules} Modules</span>
+                        </div>
+                        <h3 class="mt-2 text-xl font-semibold text-white">${course.title}</h3>
+                        <p class="mt-2 text-gray-300">${course.description}</p>
+                        <div class="mt-4 flex items-center justify-between">
+                            <div class="flex items-center">
+                                <div class="flex -space-x-1 overflow-hidden">
+                                    <img class="inline-block h-6 w-6 rounded-full ring-2 ring-white" src="https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+                                    <img class="inline-block h-6 w-6 rounded-full ring-2 ring-white" src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+                                    <img class="inline-block h-6 w-6 rounded-full ring-2 ring-white" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2.25&w=256&h=256&q=80" alt="">
+                                </div>
+                                <span class="ml-2 text-sm text-gray-300">${course.enrolled} enrolled</span>
+                            </div>
+                            <button class="gradient-bg btn-ripple text-white px-4 py-2 rounded-md text-sm font-medium" onclick="startLearning()">Start Learning</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Mobile menu toggle
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
         // Wallet connection
         const connectWalletBtns = [
             document.getElementById('connectWalletBtn'),
             document.getElementById('mobileConnectWalletBtn')
         ];
 
-        const walletModal = document.getElementById('walletModal');
-        const closeWalletModalBtn = document.getElementById('closeWalletModalBtn');
-        const walletConnectBtns = [
-            document.getElementById('suiWalletBtn'),
-            document.getElementById('martianWalletBtn'),
-            document.getElementById('ethosWalletBtn')
-        ];
-
-        // Show wallet modal
-        connectWalletBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                walletModal.classList.remove('hidden');
-            });
-        });
-
-        // Close wallet modal
-        closeWalletModalBtn.addEventListener('click', () => {
-            walletModal.classList.add('hidden');
-        });
-
-        // Connect to wallet
-        async function connectWallet(walletName) {
+        async function connectWallet() {
+            showSpinner();
             try {
-                const wallets = await initializeWalletAdapter();
-                const wallet = wallets.find(w => w.name.toLowerCase().includes(walletName.toLowerCase()));
-                
-                if (!wallet) {
-                    showNotification(`Wallet ${walletName} not found!`, 'error');
-                    return;
+                const { user } = await privy.login();
+                let walletAddress;
+
+                if (user.wallet) {
+                    walletAddress = user.wallet.address;
+                } else {
+                    const embeddedWallet = await privy.getOrCreateWallet(user.id, 'sui:testnet');
+                    walletAddress = embeddedWallet.address;
                 }
 
-                // Connect to the wallet
-                await wallet.connect();
-                const account = wallet.accounts[0];
-                const walletAddress = account.address;
-                const balance = await fetchUserBalance(wallet);
+                const balance = await fetchUserBalance(walletAddress);
 
                 // Update UI
                 document.getElementById('walletConnected').classList.remove('hidden');
@@ -291,27 +346,35 @@
                 document.getElementById('mobileWalletAddress').textContent = walletAddress.slice(0, 6) + '...' + walletAddress.slice(-4);
                 document.getElementById('mobileWalletBalance').textContent = `Balance: ${balance} SUI`;
 
-                walletModal.classList.add('hidden');
+                sessionStorage.setItem('walletAddress', walletAddress);
+
                 showNotification('Wallet connected successfully!');
             } catch (error) {
                 console.error('Wallet connection error:', error);
                 showNotification('Failed to connect wallet. Please try again.', 'error');
+            } finally {
+                hideSpinner();
             }
         }
 
-        // Wallet button listeners
-        walletConnectBtns.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const walletName = btn.textContent.trim().split(' ')[0];
-                connectWallet(walletName);
-            });
+        connectWalletBtns.forEach(btn => {
+            btn.addEventListener('click', connectWallet);
         });
+
+        // Start learning with spinner
+        async function startLearning() {
+            showSpinner();
+            setTimeout(() => {
+                hideSpinner();
+                showNotification('Starting course...');
+            }, 2000);
+        }
 
         // Notification function
         function showNotification(message, type = 'success') {
             const notification = document.createElement('div');
             notification.className = `fixed bottom-4 right-4 px-4 py-2 rounded-md shadow-lg flex items-center ${
-                type === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+                type === 'success' ? 'bg-[#4ecdc4] text-white' : 'bg-[#ff6b6b] text-white'
             }`;
             notification.innerHTML = `
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
@@ -338,6 +401,24 @@
         courseCards.forEach(card => {
             card.addEventListener('mouseenter', () => {
                 card.style.transition = 'transform 0.3s ease, box-shadow 0.3s ease';
+            });
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                if (targetId === '#') return;
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                    if (!mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                    }
+                }
             });
         });
 
