@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no">
     <title>SuiLearn & Earn | Your Gateway to the Decentralized Future</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -21,6 +21,7 @@
             background-size: 400%;
             animation: gradientAnimation 15s ease infinite;
             min-height: 100vh;
+            -webkit-tap-highlight-color: transparent;
         }
 
         /* Gradient Animation */
@@ -84,6 +85,8 @@
         .btn-ripple {
             position: relative;
             overflow: hidden;
+            min-width: 44px;
+            min-height: 44px;
         }
 
         .btn-ripple::after {
@@ -120,8 +123,51 @@
             box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
         }
 
-        /* Responsive Design */
-        @media (max-width: 600px) {
+        /* Mobile-specific styles */
+        @media (max-width: 640px) {
+            .hero-content {
+                text-align: center;
+            }
+            
+            .mobile-full-width {
+                width: 100%;
+                display: block;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            h2 {
+                font-size: 1.75rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            section {
+                padding: 2rem 1rem;
+            }
+            
+            .course-card {
+                padding: 1rem;
+            }
+            
+            #walletAddress, #mobileWalletAddress {
+                max-width: 100px;
+            }
+            
+            .flex-col.space-y-4 > * {
+                margin-bottom: 1rem;
+            }
+            
+            .hero-image-container {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
             .course-card {
                 padding: 1rem;
             }
@@ -129,6 +175,16 @@
                 padding: 10px 20px;
                 font-size: 14px;
             }
+            
+            .md-hidden {
+                display: none;
+            }
+        }
+
+        /* Ensure images don't overflow on mobile */
+        img {
+            max-width: 100%;
+            height: auto;
         }
     </style>
 </head>
@@ -153,7 +209,7 @@
                     </div>
                 </div>
                 <div class="hidden sm:ml-6 sm:flex sm:items-center">
-                    <button id="connectWalletBtn" class="gradient-bg btn-ripple text-white px-4 py-2 rounded-md text-sm font-medium">Connect Wallet</button>
+                    <button id="connectWalletBtn" class="gradient-bg btn-ripple text-white px-4 py-2 rounded-md text-sm font-medium" aria-label="Connect Wallet">Connect Wallet</button>
                     <div id="walletConnected" class="hidden ml-4 flex items-center">
                         <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#4ecdc4] text-white">
                             <svg class="-ml-0.5 mr-1.5 h-2 w-2 text-white" fill="currentColor" viewBox="0 0 8 8">
@@ -166,7 +222,7 @@
                     </div>
                 </div>
                 <div class="-mr-2 flex items-center sm:hidden">
-                    <button type="button" id="mobileMenuBtn" class="inline-flex items-center justify-center p-2 rounded-md text-white hover:text-gray-300 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[#4ecdc4]">
+                    <button type="button" id="mobileMenuBtn" class="inline-flex items-center justify-center p-2 rounded-md text-white hover:text-gray-300 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-[#4ecdc4]" aria-label="Open main menu" aria-expanded="false">
                         <span class="sr-only">Open main menu</span>
                         <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -182,7 +238,7 @@
                 <a href="#earn" class="border-transparent text-gray-300 hover:bg-gray-700 hover:border-[#4ecdc4] hover:text-white block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Earn</a>
                 <a href="#community" class="border-transparent text-gray-300 hover:bg-gray-700 hover:border-[#4ecdc4] hover:text-white block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Community</a>
                 <div class="mt-4 px-4">
-                    <button id="mobileConnectWalletBtn" class="gradient-bg btn-ripple text-white w-full px-4 py-2 rounded-md text-sm font-medium">Connect Wallet</button>
+                    <button id="mobileConnectWalletBtn" class="gradient-bg btn-ripple text-white w-full px-4 py-2 rounded-md text-sm font-medium mobile-full-width">Connect Wallet</button>
                     <div id="mobileWalletConnected" class="hidden px-4 py-3">
                         <div class="flex items-center">
                             <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-[#4ecdc4] text-white">
@@ -204,21 +260,21 @@
     <section class="gradient-bg text-white">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 md:py-24">
             <div class="md:flex md:items-center md:justify-between">
-                <div class="md:w-1/2">
+                <div class="md:w-1/2 hero-content">
                     <h1 class="text-4xl md:text-5xl font-bold leading-tight mb-4 text-shadow">Learn, Build, Earn</h1>
                     <p class="text-xl md:text-2xl mb-8 text-shadow">Your Gateway to the Decentralized Future</p>
                     <p class="text-lg mb-8 text-shadow">Master Web3, AI, and emerging technologies while earning cryptocurrency rewards on the Sui blockchain.</p>
                     <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-                        <a href="courses.html" class="bg-white text-[#ff6b6b] px-6 py-3 rounded-lg text-lg font-semibold text-center hover:bg-gray-100 transition duration-150 ease-in-out btn-ripple">Explore Courses</a>
-                        <button id="heroConnectWalletBtn" class="gradient-bg btn-ripple text-white px-6 py-3 rounded-lg text-lg font-semibold">Connect Wallet</button>
+                        <a href="courses.html" class="bg-white text-[#ff6b6b] px-6 py-3 rounded-lg text-lg font-semibold text-center hover:bg-gray-100 transition duration-150 ease-in-out btn-ripple mobile-full-width">Explore Courses</a>
+                        <button id="heroConnectWalletBtn" class="gradient-bg btn-ripple text-white px-6 py-3 rounded-lg text-lg font-semibold mobile-full-width active:scale-95 transition-transform">Connect Wallet</button>
                     </div>
                 </div>
-                <div class="hidden md:block md:w-1/2 mt-8 md:mt-0">
+                <div class="hidden md:block md:w-1/2 mt-8 md:mt-0 hero-image-container">
                     <div class="relative">
                         <div class="absolute -top-8 -left-8 w-64 h-64 bg-[#ff6b6b] rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
                         <div class="absolute -bottom-8 -right-8 w-64 h-64 bg-[#4ecdc4] rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
                         <div class="relative">
-                            <img src="/assets/images/hero-image.jpg" alt="Learn and Earn" class="w-full h-auto rounded-lg shadow-2xl">
+                            <img src="/assets/images/hero-image.jpg" alt="Learn and Earn" class="w-full h-auto rounded-lg shadow-2xl" loading="lazy">
                         </div>
                     </div>
                 </div>
@@ -229,7 +285,7 @@
     <!-- Stats Section -->
     <section class="bg-transparent py-12">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 stats-grid">
                 <div class="course-card p-6 rounded-xl">
                     <div class="flex items-center">
                         <div class="p-3 rounded-full bg-[#ff6b6b] text-white">
@@ -284,7 +340,7 @@
                 <!-- Course Card 1 -->
                 <div class="course-card rounded-xl shadow-md overflow-hidden">
                     <div class="relative">
-                        <img class="w-full h-48 object-cover" src="/assets/images/sui-move-course.jpg" alt="Sui Move Fundamentals">
+                        <img class="w-full h-48 object-cover" src="/assets/images/sui-move-course.jpg" alt="Sui Move Fundamentals" loading="lazy">
                         <div class="absolute top-2 right-2 bg-[#ff6b6b] text-white text-xs font-bold px-2 py-1 rounded-full">Earn: 50 SUI</div>
                     </div>
                     <div class="p-6">
@@ -297,20 +353,20 @@
                         <div class="mt-4 flex items-center justify-between">
                             <div class="flex items-center">
                                 <div class="flex -space-x-1 overflow-hidden">
-                                    <img class="inline-block h-6 w-6 rounded-full ring-2 ring-white" src="https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
-                                    <img class="inline-block h-6 w-6 rounded-full ring-2 ring-white" src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
-                                    <img class="inline-block h-6 w-6 rounded-full ring-2 ring-white" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.25&w=256&h=256&q=80" alt="">
+                                    <img class="inline-block h-6 w-6 rounded-full ring-2 ring-white" src="https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" loading="lazy">
+                                    <img class="inline-block h-6 w-6 rounded-full ring-2 ring-white" src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" loading="lazy">
+                                    <img class="inline-block h-6 w-6 rounded-full ring-2 ring-white" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.25&w=256&h=256&q=80" alt="" loading="lazy">
                                 </div>
                                 <span class="ml-2 text-sm text-gray-300">1.2K enrolled</span>
                             </div>
-                            <button class="gradient-bg btn-ripple text-white px-4 py-2 rounded-md text-sm font-medium" onclick="startLearning()">Start Learning</button>
+                            <button class="gradient-bg btn-ripple text-white px-4 py-2 rounded-md text-sm font-medium active:scale-95 transition-transform" onclick="startLearning()">Start Learning</button>
                         </div>
                     </div>
                 </div>
                 <!-- Course Card 2 -->
                 <div class="course-card rounded-xl shadow-md overflow-hidden">
                     <div class="relative">
-                        <img class="w-full h-48 object-cover" src="/assets/images/defi-course.jpg" alt="DeFi Masterclass">
+                        <img class="w-full h-48 object-cover" src="/assets/images/defi-course.jpg" alt="DeFi Masterclass" loading="lazy">
                         <div class="absolute top-2 right-2 bg-[#ff6b6b] text-white text-xs font-bold px-2 py-1 rounded-full">Earn: 100 SUI</div>
                     </div>
                     <div class="p-6">
@@ -323,19 +379,19 @@
                         <div class="mt-4 flex items-center justify-between">
                             <div class="flex items-center">
                                 <div class="flex -space-x-1 overflow-hidden">
-                                    <img class="inline-block h-6 w-6 rounded-full ring-2 ring-white" src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
-                                    <img class="inline-block h-6 w-6 rounded-full ring-2 ring-white" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+                                    <img class="inline-block h-6 w-6 rounded-full ring-2 ring-white" src="https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" loading="lazy">
+                                    <img class="inline-block h-6 w-6 rounded-full ring-2 ring-white" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" loading="lazy">
                                 </div>
                                 <span class="ml-2 text-sm text-gray-300">850 enrolled</span>
                             </div>
-                            <button class="gradient-bg btn-ripple text-white px-4 py-2 rounded-md text-sm font-medium" onclick="startLearning()">Start Learning</button>
+                            <button class="gradient-bg btn-ripple text-white px-4 py-2 rounded-md text-sm font-medium active:scale-95 transition-transform" onclick="startLearning()">Start Learning</button>
                         </div>
                     </div>
                 </div>
                 <!-- Course Card 3 -->
                 <div class="course-card rounded-xl shadow-md overflow-hidden">
                     <div class="relative">
-                        <img class="w-full h-48 object-cover" src="/assets/images/nft-course.jpg" alt="NFT Development">
+                        <img class="w-full h-48 object-cover" src="/assets/images/nft-course.jpg" alt="NFT Development" loading="lazy">
                         <div class="absolute top-2 right-2 bg-[#ff6b6b] text-white text-xs font-bold px-2 py-1 rounded-full">Earn: 75 SUI</div>
                     </div>
                     <div class="p-6">
@@ -348,18 +404,18 @@
                         <div class="mt-4 flex items-center justify-between">
                             <div class="flex items-center">
                                 <div class="flex -space-x-1 overflow-hidden">
-                                    <img class="inline-block h-6 w-6 rounded-full ring-2 ring-white" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
-                                    <img class="inline-block h-6 w-6 rounded-full ring-2 ring-white" src="https://images.unsplash.com/photo-1517365884913-3c33884b06fa?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+                                    <img class="inline-block h-6 w-6 rounded-full ring-2 ring-white" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" loading="lazy">
+                                    <img class="inline-block h-6 w-6 rounded-full ring-2 ring-white" src="https://images.unsplash.com/photo-1517365884913-3c33884b06fa?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" loading="lazy">
                                 </div>
                                 <span class="ml-2 text-sm text-gray-300">1.5K enrolled</span>
                             </div>
-                            <button class="gradient-bg btn-ripple text-white px-4 py-2 rounded-md text-sm font-medium" onclick="startLearning()">Start Learning</button>
+                            <button class="gradient-bg btn-ripple text-white px-4 py-2 rounded-md text-sm font-medium active:scale-95 transition-transform" onclick="startLearning()">Start Learning</button>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="mt-12 text-center">
-                <a href="courses.html" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white gradient-bg btn-ripple">View All Courses</a>
+                <a href="courses.html" class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white gradient-bg btn-ripple mobile-full-width active:scale-95 transition-transform">View All Courses</a>
             </div>
         </div>
     </section>
@@ -495,7 +551,7 @@
                         </div>
                         <div class="mt-4 md:mt-0 md:w-1/3">
                             <div id="walletNotConnectedEarnings" class="text-center">
-                                <button id="earningsConnectWalletBtn" class="gradient-bg btn-ripple text-white w-full px-4 py-3 rounded-md text-sm font-medium">Connect Wallet to View Earnings</button>
+                                <button id="earningsConnectWalletBtn" class="gradient-bg btn-ripple text-white w-full px-4 py-3 rounded-md text-sm font-medium mobile-full-width active:scale-95 transition-transform">Connect Wallet to View Earnings</button>
                             </div>
                             <div id="walletConnectedEarnings" class="hidden">
                                 <div class="bg-transparent p-4 rounded-lg">
@@ -507,7 +563,7 @@
                                         <span class="text-sm font-medium text-gray-300">Available to Claim</span>
                                         <span class="text-lg font-bold text-[#4ecdc4]">0 SUI</span>
                                     </div>
-                                    <button id="claimRewardsBtn" class="mt-4 gradient-bg btn-ripple text-white w-full px-4 py-2 rounded-md text-sm font-medium">Claim Rewards</button>
+                                    <button id="claimRewardsBtn" class="mt-4 gradient-bg btn-ripple text-white w-full px-4 py-2 rounded-md text-sm font-medium active:scale-95 transition-transform">Claim Rewards</button>
                                 </div>
                             </div>
                         </div>
@@ -540,7 +596,7 @@
                     <div class="mt-6">
                         <div class="flex items-start space-x-4">
                             <div class="flex-shrink-0">
-                                <img class="h-10 w-10 rounded-full" src="https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
+                                <img class="h-10 w-10 rounded-full" src="https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" loading="lazy">
                             </div>
                             <div class="min-w-0 flex-1">
                                 <div class="text-sm font-medium text-white">
@@ -567,7 +623,7 @@
                         </div>
                     </div>
                     <div class="mt-4">
-                        <button class="w-full border border-[#4ecdc4] rounded-md px-4 py-2 text-sm font-medium text-white hover:bg-[#4ecdc4] btn-ripple">View All Discussions</button>
+                        <button class="w-full border border-[#4ecdc4] rounded-md px-4 py-2 text-sm font-medium text-white hover:bg-[#4ecdc4] btn-ripple active:scale-95 transition-transform">View All Discussions</button>
                     </div>
                 </div>
                 <div class="course-card p-6 rounded-xl">
@@ -629,7 +685,7 @@
                         </ul>
                     </div>
                     <div class="mt-4">
-                        <button class="w-full border border-[#4ecdc4] rounded-md px-4 py-2 text-sm font-medium text-white hover:bg-[#4ecdc4] btn-ripple">View Full Leaderboard</button>
+                        <button class="w-full border border-[#4ecdc4] rounded-md px-4 py-2 text-sm font-medium text-white hover:bg-[#4ecdc4] btn-ripple active:scale-95 transition-transform">View Full Leaderboard</button>
                     </div>
                 </div>
             </div>
@@ -642,8 +698,8 @@
             <h2 class="text-3xl font-extrabold sm:text-4xl text-shadow">Ready to Start Learning & Earning?</h2>
             <p class="mt-4 text-xl max-w-2xl mx-auto text-shadow">Join thousands of learners building the future of Web3 on Sui.</p>
             <div class="mt-8 flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
-                <button id="finalConnectWalletBtn" class="gradient-bg btn-ripple text-white px-6 py-3 rounded-lg text-lg font-semibold">Connect Wallet</button>
-                <a href="courses.html" class="bg-transparent border-2 border-white text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-white hover:text-[#ff6b6b] btn-ripple">Explore Courses</a>
+                <button id="finalConnectWalletBtn" class="gradient-bg btn-ripple text-white px-6 py-3 rounded-lg text-lg font-semibold mobile-full-width active:scale-95 transition-transform">Connect Wallet</button>
+                <a href="courses.html" class="bg-transparent border-2 border-white text-white px-6 py-3 rounded-lg text-lg font-semibold hover:bg-white hover:text-[#ff6b6b] btn-ripple mobile-full-width active:scale-95 transition-transform">Explore Courses</a>
             </div>
         </div>
     </section>
@@ -717,9 +773,11 @@
     </footer>
 
     <script>
-        // Initialize Privy
-        const privy = new PrivyClient('cmdhj4xqn00dkl40mpv9axe5c', {
-            loginMethods: ['wallet', 'email', 'google', 'twitter'],
+        // Initialize Privy with mobile detection
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+
+        const privyConfig = {
+            loginMethods: isMobile ? ['wallet'] : ['wallet', 'email', 'google', 'twitter'],
             embeddedWallets: {
                 createOnLogin: 'all-users',
                 requireUserPasswordOnCreate: false,
@@ -739,7 +797,9 @@
                     rpcUrl: 'https://fullnode.testnet.sui.io',
                 },
             ],
-        });
+        };
+
+        const privy = new PrivyClient('cmdhj4xqn00dkl40mpv9axe5c', privyConfig);
 
         // Spinner Functions
         function showSpinner() {
@@ -788,20 +848,33 @@
         
         mobileMenuBtn.addEventListener('click', () => {
             mobileMenu.classList.toggle('hidden');
+            mobileMenuBtn.setAttribute('aria-expanded', !mobileMenu.classList.contains('hidden'));
         });
 
-        // Wallet connection
-        const connectWalletBtns = [
-            document.getElementById('connectWalletBtn'),
-            document.getElementById('heroConnectWalletBtn'),
-            document.getElementById('earningsConnectWalletBtn'),
-            document.getElementById('finalConnectWalletBtn'),
-            document.getElementById('mobileConnectWalletBtn')
-        ];
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!mobileMenu.contains(e.target) && e.target !== mobileMenuBtn) {
+                mobileMenu.classList.add('hidden');
+                mobileMenuBtn.setAttribute('aria-expanded', 'false');
+            }
+        });
 
+        // Enhanced wallet connection for mobile
         async function connectWallet() {
             showSpinner();
             try {
+                // Handle mobile wallet apps
+                if (isMobile && !window.ethereum) {
+                    window.location.href = 'suideeplink://connect'; // Replace with actual Sui wallet deep link
+                    setTimeout(() => {
+                        // Fallback if deep link fails
+                        if (!document.hidden) {
+                            window.location.href = 'https://sui.io/wallet'; // Wallet download page
+                        }
+                    }, 500);
+                    return;
+                }
+
                 const { user } = await privy.login();
                 let walletAddress;
 
@@ -812,36 +885,54 @@
                     walletAddress = embeddedWallet.address;
                 }
 
-                const balance = await fetchUserBalance(walletAddress);
-                const rewards = await fetchUserRewards(walletAddress);
-
-                // Update UI
-                document.getElementById('walletConnected').classList.remove('hidden');
-                document.getElementById('walletAddress').textContent = walletAddress.slice(0, 6) + '...' + walletAddress.slice(-4);
-                document.getElementById('walletBalance').textContent = `Balance: ${balance} SUI`;
+                // Update UI with wallet info
+                await updateWalletUI(walletAddress);
                 
-                document.getElementById('mobileWalletConnected').classList.remove('hidden');
-                document.getElementById('mobileWalletAddress').textContent = walletAddress.slice(0, 6) + '...' + walletAddress.slice(-4);
-                document.getElementById('mobileWalletBalance').textContent = `Balance: ${balance} SUI`;
-                
-                document.getElementById('walletNotConnectedEarnings').classList.add('hidden');
-                document.getElementById('walletConnectedEarnings').classList.remove('hidden');
-                document.querySelector('#walletConnectedEarnings .text-lg.font-bold.text-white').textContent = `${rewards.totalEarned} SUI`;
-                document.querySelector('#walletConnectedEarnings .text-lg.font-bold.text-[#4ecdc4]').textContent = `${rewards.availableToClaim} SUI`;
-
+                // Store wallet in session
                 sessionStorage.setItem('walletAddress', walletAddress);
 
-                showNotification('Wallet connected successfully! Redirecting to courses...');
-                setTimeout(() => {
-                    window.location.href = 'courses.html';
-                }, 2000);
+                showNotification('Wallet connected successfully!');
             } catch (error) {
                 console.error('Wallet connection error:', error);
-                showNotification('Failed to connect wallet. Please try again.', 'error');
+                showNotification(isMobile ? 
+                    'Please install a Sui wallet app' : 
+                    'Failed to connect wallet. Please try again.', 
+                'error');
             } finally {
                 hideSpinner();
             }
         }
+
+        // Unified UI update function
+        async function updateWalletUI(walletAddress) {
+            const balance = await fetchUserBalance(walletAddress);
+            const rewards = await fetchUserRewards(walletAddress);
+
+            // Update desktop UI
+            document.getElementById('walletConnected').classList.remove('hidden');
+            document.getElementById('walletAddress').textContent = `${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}`;
+            document.getElementById('walletBalance').textContent = `Balance: ${balance} SUI`;
+            
+            // Update mobile UI
+            document.getElementById('mobileWalletConnected').classList.remove('hidden');
+            document.getElementById('mobileWalletAddress').textContent = `${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}`;
+            document.getElementById('mobileWalletBalance').textContent = `Balance: ${balance} SUI`;
+            
+            // Update earnings section
+            document.getElementById('walletNotConnectedEarnings').classList.add('hidden');
+            document.getElementById('walletConnectedEarnings').classList.remove('hidden');
+            document.querySelector('#walletConnectedEarnings .text-lg.font-bold.text-white').textContent = `${rewards.totalEarned} SUI`;
+            document.querySelector('#walletConnectedEarnings .text-lg.font-bold.text-[#4ecdc4]').textContent = `${rewards.availableToClaim} SUI`;
+        }
+
+        // Wallet connection buttons
+        const connectWalletBtns = [
+            document.getElementById('connectWalletBtn'),
+            document.getElementById('heroConnectWalletBtn'),
+            document.getElementById('earningsConnectWalletBtn'),
+            document.getElementById('finalConnectWalletBtn'),
+            document.getElementById('mobileConnectWalletBtn')
+        ];
 
         connectWalletBtns.forEach(btn => {
             btn.addEventListener('click', connectWallet);
@@ -943,6 +1034,14 @@
                     }
                 }
             });
+        });
+
+        // Check for existing wallet connection on page load
+        document.addEventListener('DOMContentLoaded', async () => {
+            const walletAddress = sessionStorage.getItem('walletAddress');
+            if (walletAddress) {
+                await updateWalletUI(walletAddress);
+            }
         });
     </script>
 </body>
